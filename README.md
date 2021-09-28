@@ -16,14 +16,6 @@
 - 设置.env.development环境变量，便于在开发环境下禁止委托background script发起请求
 - 实现了popup、content、background简单Demo
 
-## 教程
-
-📚📚本项目代码有详细的讲解教程。精心编排，超值干货！手把手带你体验React+Antd开发Chrome插件完整流程📚📚
-
-😃😃请关注作者**微信公众号「卧梅又闻花」**，阅读文章《React+Antd开发Chrome插件教程》😃😃
-
-❤️❤️文章教程是作者花费大量时间精心编排准备的，您的支持是作者写作的最大动力源泉❤️❤️
-
 ## 安装
 
 git clone至本地，执行npm install或cnpm install安装依赖。
