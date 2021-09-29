@@ -83,8 +83,8 @@ let ContractsUtils = {
   addFriend: async() => {
     var addressListContract = await ContractsUtils.createAddressListContract();
     await addressListContract.addFriend(
-      "0xe999547c0465726828f9953a087ec0a566bd1932",//好友的地址
-      "zhengbinbin",//好友备注
+      "0x8D60FDAfDFe2c8162866880F534932baE29F716f",//好友的地址
+      "liuweiguo",//好友备注
       RelationFactoryContractAddress//好友来源，暂时写死
     )
     console.log("添加好友成功");
@@ -115,9 +115,9 @@ let ContractsUtils = {
   //合约方法 - 7.向好友发送消息
   sendMessage: async() => {
     var addressListContract = await ContractsUtils.createAddressListContract();
-    addressListContract.sendMessage("0xe999547c0465726828f9953a087ec0a566bd1932", "发送的消息!")
+    addressListContract.sendMessage("0x8D60FDAfDFe2c8162866880F534932baE29F716f", "https://ivg37-qiaaa-aaaab-aaaga-cai.ic0.app/#!/game/lwg/.zbb")
     .then((value) => {
-      console.log("您的消息已上链！！！")
+      console.log("您的消息已发送！！！")
       console.log(value)
     })
   },

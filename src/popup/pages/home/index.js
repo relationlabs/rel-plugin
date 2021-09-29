@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import './home.styl'
 import { Tabs } from 'antd'
 import FriendTab from './children/friendTab/index'
-import DappTab from './children/dappTab/index'
+import MessageTab from './children/messageTab/index'
 import TestTab from './children/testTab/index'
 import useAccount from '../../useAccount.js'
 import LogoGather from '../motion/LogoGather/index';
@@ -67,18 +67,10 @@ function Home(props) {
 
       <div className="section-two">
         <Tabs defaultActiveKey="0" onChange={callback}>
-          <TabPane tab="合约测试" key="0">
-            <TestTab/>
-          </TabPane>
-          <TabPane tab="消息" key="1">
-            {/* Content of Tab Pane 3 */}
-          </TabPane>
-          <TabPane tab="通讯录" key="2">
-            <FriendTab />
-          </TabPane>
-          <TabPane tab="我的" key="3">
-            <DappTab/>
-          </TabPane>
+          <TabPane tab="合约测试" key="0"><TestTab/></TabPane>
+          <TabPane tab="消息列表" key="1"><MessageTab/></TabPane>
+          <TabPane tab="通讯录" key="2"><FriendTab/></TabPane>
+          <TabPane tab="我的信息" key="3">{/* <DappTab/> */}</TabPane>
         </Tabs>
       </div>
     </div>

@@ -8,6 +8,7 @@ import ContractsUtils from '../../../../../utils/contractsUtils.js';
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 function FriendTab(props) {
+  const [loading, setLoading] = useState(false);
   const [friendList, setFriendList] = useState([])
 
   useEffect(() => {
@@ -15,14 +16,21 @@ function FriendTab(props) {
   }, [])
 
   const getFriendList = () => {
+    setLoading(true);
     ContractsUtils.getFriendList().then((res) => {
+      setLoading(false);
       setFriendList(res);
     })
   }
 
+  const formatAddress = (addressStr) => {
+    return addressStr.substring(0, 4)+"..."+addressStr.substr(addressStr.length-4);
+
+  }
+
   return (
     <div className="friendList">
-    <Spin indicator={antIcon} spinning={false}/>
+    <Spin indicator={antIcon} spinning={loading}>
       { friendList.length !== 0 &&
         friendList.map((item,index) => {
           return <div className="item" key={index}>
@@ -36,7 +44,7 @@ function FriendTab(props) {
               <div className="item-info">
                 <div className="">{item.name}</div>
                 <div className="address">
-                  <span>{item.identity}</span>
+                  <span>{formatAddress(item.identity)}</span>
                   <CopyOutlined />
                 </div>
               </div>
@@ -52,7 +60,7 @@ function FriendTab(props) {
         })
       }
       { friendList.length === 0 && <EmptyStatus/> }
-      <Spin indicator={antIcon} />
+      </Spin>
     </div>
   )
 }
