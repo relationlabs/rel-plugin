@@ -7,11 +7,16 @@ import TestTab from './children/testTab/index'
 import useAccount from '../../useAccount.js'
 import LogoGather from '../motion/LogoGather/index';
 import { GithubOutlined, TwitterOutlined, FacebookOutlined, LockFilled} from '@ant-design/icons';
+import ContractsUtils from '../../../utils/contractsUtils.js';
 
 const { TabPane } = Tabs;
 
 function Home(props) {
-  const {} = useAccount();
+  const [message, setMessage] = useState(null)
+
+  useEffect(() => {
+    listenMessage();
+  }, [])
 
   const callback = (key) => {
     console.log(key);
@@ -22,12 +27,18 @@ function Home(props) {
 	}
 
   const toEthAccount = () => {
-		props.history.push('/ethAccount')
+		// props.history.push('/ethAccount')
 	}
 
-  useEffect(() => {
-
-  }, [])
+  const listenMessage = async() => {
+    console.log("合约方法 - 9.监听自己收到的消息");
+    var addressListContract = await ContractsUtils.createAddressListContract();
+    addressListContract.on('GetMessage', (from, to, value) => {
+      console.log(value);
+      console.log('I received ' + value?.args?.message + ' tokens from ' + from);
+      setMessage(value);
+    });
+  }
 
   return (
     <div className="layout-home">
@@ -60,15 +71,12 @@ function Home(props) {
             <FacebookOutlined spin={false} className="iconStyle" />
           </div>
         </div>
-        {/* <div className="info">
-          <div className="metaInfo">这里可以添加metaId信息</div>
-        </div> */}
       </div>
 
       <div className="section-two">
         <Tabs defaultActiveKey="0" onChange={callback}>
           <TabPane tab="合约测试" key="0"><TestTab/></TabPane>
-          <TabPane tab="消息列表" key="1"><MessageTab/></TabPane>
+          <TabPane tab="消息列表" key="1"><MessageTab message={message}/></TabPane>
           <TabPane tab="通讯录" key="2"><FriendTab/></TabPane>
           <TabPane tab="我的信息" key="3">{/* <DappTab/> */}</TabPane>
         </Tabs>

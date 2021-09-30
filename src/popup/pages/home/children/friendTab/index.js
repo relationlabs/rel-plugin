@@ -25,7 +25,6 @@ function FriendTab(props) {
 
   const formatAddress = (addressStr) => {
     return addressStr.substring(0, 4)+"..."+addressStr.substr(addressStr.length-4);
-
   }
 
   return (

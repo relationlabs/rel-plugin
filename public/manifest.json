@@ -3,13 +3,13 @@
   "version": "1.0",
   "description": "React开发chrome插件Demo。",
   "icons": {
-    "16": "images/icon.png",
-    "48": "images/icon.png",
-    "128": "images/icon.png"
+    "16": "images/logo-black.png",
+    "48": "images/logo-black.png",
+    "128": "images/logo-black.png"
   },
   "manifest_version": 2,
   "page_action": {
-    "default_icon": "images/icon.png",
+    "default_icon": "images/logo-black.png",
     "default_title": "React CRX",
     "default_popup": "index.html"
   },

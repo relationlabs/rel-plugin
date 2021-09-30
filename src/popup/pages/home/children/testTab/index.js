@@ -5,10 +5,6 @@ import ContractsUtils from '../../../../../utils/contractsUtils.js';
 
 function TestTab(props) {
 
-  useEffect(() => {
-    ContractsUtils.listenMessage();
-  }, [])
-
   return (
     <div style={{width:'100%', textAlign:'center'}}>
       <Button 
