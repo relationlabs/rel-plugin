@@ -5,20 +5,20 @@ import './antd-diy.css'
 import './content.styl'
 
 function Content() {
-    const [mainModalVisiable, setMainModalVisiable] = useState(false)
+    const [mainModalVisible, setMainModalVisible] = useState(false)
 
     return (
         <div className="CRX-content">
             <div
                 className="content-entry"
                 onClick={() => {
-                    setMainModalVisiable(true)
+                    setMainModalVisible(true)
                 }}
             ></div>
-            {mainModalVisiable ? (
+            {mainModalVisible ? (
                 <MainModal
                     onClose={() => {
-                        setMainModalVisiable(false)
+                        setMainModalVisible(false)
                     }}
                 />
             ) : null}

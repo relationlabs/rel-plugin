@@ -10,7 +10,7 @@ function EmptyStatus() {
           <a>暂无数据</a>
         }
       >
-        <Button type="primary">立刻添加</Button>
+        {/* <Button type="primary">立刻添加</Button> */}
       </Empty>
     )
 }

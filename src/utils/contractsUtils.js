@@ -115,11 +115,11 @@ let ContractsUtils = {
   //合约方法 - 7.向好友发送消息
   sendMessage: async() => {
     var addressListContract = await ContractsUtils.createAddressListContract();
-    addressListContract.sendMessage("0x7fcc26e9527d88b63e822b72d2a68ac45c8aba05", "https://ivg37-qiaaa-aaaab-aaaga-cai.ic0.app/#!/game/zbb/.lwg")
-    .then((value) => {
-      console.log("您的消息已发送！！！")
-      console.log(value)
-    })
+    return addressListContract.sendMessage("0x7fcc26e9527d88b63e822b72d2a68ac45c8aba05", "https://ivg37-qiaaa-aaaab-aaaga-cai.ic0.app/#!/game/zbb/.lwg")
+    // .then((value) => {
+    //   console.log("您的消息已发送！！！")
+    //   console.log(value)
+    // })
   },
 
   //合约方法 - 9.监听自己收到的消息

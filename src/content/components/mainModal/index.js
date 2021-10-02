@@ -52,7 +52,7 @@ function MainModal(props) {
         <Modal
             className="CRX-mainModal CRX-antd-diy"
             visible={true}
-            title={'CRX对话框'}
+            title={'好友列表'}
             footer={null}
             maskClosable={false}
             onCancel={() => {

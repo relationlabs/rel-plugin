@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import './friendTab.styl'
-import { Spin } from 'antd';
+import { Spin, Popconfirm, message, Button } from 'antd';
 import { CopyOutlined, MessageOutlined, LoadingOutlined } from '@ant-design/icons';
 import EmptyStatus from '../../../../../content/components/emptyStatus';
 import ContractsUtils from '../../../../../utils/contractsUtils.js';
@@ -9,7 +9,8 @@ const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 function FriendTab(props) {
   const [loading, setLoading] = useState(false);
-  const [friendList, setFriendList] = useState([])
+  const [currentItem, setCurrentItem] = useState(null);
+  const [friendList, setFriendList] = useState([]);
 
   useEffect(() => {
     getFriendList();
@@ -26,6 +27,23 @@ function FriendTab(props) {
   const formatAddress = (addressStr) => {
     return addressStr.substring(0, 4)+"..."+addressStr.substr(addressStr.length-4);
   }
+
+  const sendMessage = (item) => {
+    setCurrentItem(item)
+  }
+
+  const handleOk = () => {
+    ContractsUtils.sendMessage().then(() => {
+      message.success('发送成功，正在跳转');
+      setTimeout(() => {
+        window.open("https://ivg37-qiaaa-aaaab-aaaga-cai.ic0.app/#!/game/binbin1/.weiguo");
+      }, 2000)
+    })
+  };
+
+  const handleCancel = () => {
+    // message.success('Click on No');
+  };
 
   return (
     <div className="friendList">
@@ -48,17 +66,20 @@ function FriendTab(props) {
                 </div>
               </div>
             </div>
-            <a 
-              target="_black"
-              className="message" 
-              href="https://ivg37-qiaaa-aaaab-aaaga-cai.ic0.app/#!/game/binbin1/.weiguo"
-              // href="https://ivg37-qiaaa-aaaab-aaaga-cai.ic0.app/#!/play"
-              // https://ivg37-qiaaa-aaaab-aaaga-cai.ic0.app/#!/game/binbin1/.weiguo
-              ><MessageOutlined /></a>
+              <Popconfirm
+                placement="topRight"
+                title={`是否向好友${currentItem?.name}发送游戏邀请，消息发送后直接进入游戏房间等待?`}
+                onConfirm={handleOk}
+                onCancel={handleCancel}
+                okText="发送"
+                cancelText="取消"
+              >
+                <MessageOutlined onClick={() => sendMessage(item)}/>
+              </Popconfirm>
           </div>
         })
       }
-      { friendList.length === 0 && <EmptyStatus/> }
+      { friendList.length === 0 &&  loading == false && <EmptyStatus/> }
       </Spin>
     </div>
   )
