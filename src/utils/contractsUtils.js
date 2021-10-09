@@ -80,14 +80,13 @@ let ContractsUtils = {
   },
 
   //合约方法 - 5.添加好友
-  addFriend: async() => {
+  addFriend: async(value) => {
     var addressListContract = await ContractsUtils.createAddressListContract();
-    await addressListContract.addFriend(
-      "0x7fcc26e9527d88b63e822b72d2a68ac45c8aba05",//好友的地址
-      "zbb",//好友备注
+    return  addressListContract.addFriend(
+      value.split(':')[1],//好友的地址
+      value.split(':')[0],//好友备注
       RelationFactoryContractAddress//好友来源，暂时写死
-    )
-    console.log("添加好友成功");
+    );
   },
 
   //合约方法 - 6.获取当前用户好友列表
@@ -113,13 +112,13 @@ let ContractsUtils = {
   },
 
   //合约方法 - 7.向好友发送消息
-  sendMessage: async() => {
+  sendMessage: async(currentItem) => {
+    console.log(currentItem);
     var addressListContract = await ContractsUtils.createAddressListContract();
-    return addressListContract.sendMessage("0x7fcc26e9527d88b63e822b72d2a68ac45c8aba05", "https://ivg37-qiaaa-aaaab-aaaga-cai.ic0.app/#!/game/zbb/.lwg")
-    // .then((value) => {
-    //   console.log("您的消息已发送！！！")
-    //   console.log(value)
-    // })
+    return addressListContract.sendMessage(
+      currentItem?.identity, 
+      `https://ivg37-qiaaa-aaaab-aaaga-cai.ic0.app/#!/game/${currentItem?.name}/.Bob`
+    )
   },
 
   //合约方法 - 9.监听自己收到的消息

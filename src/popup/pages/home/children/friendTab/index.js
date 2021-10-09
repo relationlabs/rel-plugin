@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react'
 import './friendTab.styl'
-import { Spin, Popconfirm, message, Button } from 'antd';
+import { Spin, Popconfirm, message, Input } from 'antd';
 import { CopyOutlined, MessageOutlined, LoadingOutlined } from '@ant-design/icons';
 import EmptyStatus from '../../../../../content/components/emptyStatus';
 import ContractsUtils from '../../../../../utils/contractsUtils.js';
 
+const { Search } = Input;
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 function FriendTab(props) {
@@ -32,11 +33,12 @@ function FriendTab(props) {
     setCurrentItem(item)
   }
 
-  const handleOk = () => {
-    ContractsUtils.sendMessage().then(() => {
+  const handleOk = (currentItem) => {
+    ContractsUtils.sendMessage(currentItem).then((res) => {
+      console.log(res);
       message.success('发送成功，正在跳转');
       setTimeout(() => {
-        window.open("https://ivg37-qiaaa-aaaab-aaaga-cai.ic0.app/#!/game/binbin1/.weiguo");
+        window.open(`https://ivg37-qiaaa-aaaab-aaaga-cai.ic0.app/#!/game/Bob/.${currentItem?.name}`);
       }, 2000)
     })
   };
@@ -45,8 +47,32 @@ function FriendTab(props) {
     // message.success('Click on No');
   };
 
+  const onSearch = (value) => {
+    if (value == '' || value == null || value == undefined) {
+      message.error("输入格式有误")
+    } else {
+      let sameList = friendList.filter((item) => item.identity == value.split(':')[1]);
+      if (sameList.length > 0) {
+        message.error("地址已添加！");
+      } else {
+        ContractsUtils.addFriend(value).then((res) => {
+          console.log(res);
+          message.success("好友添加成功");
+          getFriendList();
+        })
+      }
+    }
+  };
+
   return (
     <div className="friendList">
+      <Search
+        placeholder="请输入好友名称+地址冒号分隔"
+        allowClear
+        enterButton="添加"
+        size="middle"
+        onSearch={onSearch}
+      />
     <Spin indicator={antIcon} spinning={loading}>
       { friendList.length !== 0 &&
         friendList.map((item,index) => {
@@ -69,7 +95,7 @@ function FriendTab(props) {
               <Popconfirm
                 placement="topRight"
                 title={`是否向好友${currentItem?.name}发送游戏邀请，消息发送后直接进入游戏房间等待?`}
-                onConfirm={handleOk}
+                onConfirm={() => handleOk(currentItem)}
                 onCancel={handleCancel}
                 okText="发送"
                 cancelText="取消"
