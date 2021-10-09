@@ -94,12 +94,14 @@ let ContractsUtils = {
     var addressListContract = await ContractsUtils.createAddressListContract();
     let friendInfoSize = await addressListContract.friendSize();
     friendInfoSize = parseInt(friendInfoSize);
+    console.log("friendInfoSize: " + friendInfoSize);
     let friendList = [];
     //遍历，获取好友列表
     if (friendInfoSize > 0) {
       for (var i = 1; i <= friendInfoSize; i++) {
         let friendAddress = await addressListContract.indexAddressMap(i);
         let friendInfo = await addressListContract.friendMap(friendAddress);
+        console.log(friendInfo);
         friendList.push({
           name: friendInfo.name,
           identity: friendInfo.identity,
@@ -107,7 +109,6 @@ let ContractsUtils = {
         })
       }
     }
-    // console.log(friendList);
     return friendList
   },
 

@@ -10,6 +10,7 @@ const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 function FriendTab(props) {
   const [loading, setLoading] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
   const [friendList, setFriendList] = useState([]);
 
@@ -47,7 +48,7 @@ function FriendTab(props) {
     // message.success('Click on No');
   };
 
-  const onSearch = (value) => {
+  const onSearch = async(value) => {
     if (value == '' || value == null || value == undefined) {
       message.error("输入格式有误")
     } else {
@@ -55,11 +56,13 @@ function FriendTab(props) {
       if (sameList.length > 0) {
         message.error("地址已添加！");
       } else {
-        ContractsUtils.addFriend(value).then((res) => {
-          console.log(res);
-          message.success("好友添加成功");
-          getFriendList();
-        })
+        setSearchLoading(true);
+        var tx = await ContractsUtils.addFriend(value)
+        // 操作还没完成，需要等待挖矿
+        await tx.wait();
+        setSearchLoading(false);
+        message.success("好友添加成功");
+        getFriendList();
       }
     }
   };
@@ -67,6 +70,7 @@ function FriendTab(props) {
   return (
     <div className="friendList">
       <Search
+        loading={searchLoading}
         placeholder="请输入好友名称+地址冒号分隔"
         allowClear
         enterButton="添加"
