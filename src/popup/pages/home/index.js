@@ -12,10 +12,12 @@ import ContractsUtils from '../../../utils/contractsUtils.js';
 const { TabPane } = Tabs;
 
 function Home(props) {
-  const [message, setMessage] = useState(null)
+  const [message, setMessage] = useState(null);
+  const [address, setAddress] = useState('');
 
   useEffect(() => {
     listenMessage();
+    setAddress(ContractsUtils.getLocalStorageWallet().address);
   }, [])
 
   const callback = (key) => {
@@ -63,17 +65,15 @@ function Home(props) {
               className="icon" 
               loading="lazy" 
               src="images/logo-white.png"
-              // data-src="https://wepiggy.static.fortop.site/app/static/lowRisk.aa37608b.gif" 
-              // src="https://wepiggy.static.fortop.site/app/static/lowRisk.aa37608b.gif"
             >
             </img>
           </div>
-          <div className="static">
-            <div className="data">Meta-RelationShip-ID</div>
-          </div>
-          <div className="address">
-            <div className="data">Bob &nbsp;-&nbsp;{formatAddress("0xB8c107bf274d3a06440De6395D4B7b0b59caa9B9")}</div>
-            {/* <div className="data">{formatAddress("0x7fcc26e9527d88b63e822b72d2a68ac45c8aba05")}</div> */}
+          {/* <div className="static">
+            <div className="data">IC - Contact</div>
+          </div> */}
+          <div className="address" >
+            <div className="data">IC - Contact</div>
+            <div className="data">{ContractsUtils.getUserName(address)}</div>
           </div>
           <div className="chainList">
             <GithubOutlined spin={false} className="iconStyle" onClick={toEthAccount}/>

@@ -25,7 +25,6 @@ export default function useAccount(){
     // console.log(lbcWallet);
 
     // ContractsUtils.sendMessage();
-    // ContractsUtils.contactWithMyFriend();
   }
 
   return {

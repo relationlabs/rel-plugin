@@ -34,18 +34,20 @@ function FriendTab(props) {
     setCurrentItem(item)
   }
 
-  const handleOk = (currentItem) => {
-    ContractsUtils.sendMessage(currentItem).then((res) => {
-      console.log(res);
-      message.success('发送成功，正在跳转');
-      setTimeout(() => {
-        window.open(`https://ivg37-qiaaa-aaaab-aaaga-cai.ic0.app/#!/game/Bob/.${currentItem?.name}`);
-      }, 2000)
-    })
-  };
-
-  const handleCancel = () => {
-    // message.success('Click on No');
+  const handleOk = async(currentItem) => {
+    var userName = ContractsUtils.getUserName(ContractsUtils.getLocalStorageWallet().address)
+    var isCreate = await ContractsUtils.isCreateRelationAddress(currentItem.identity);
+    if(isCreate) {
+      ContractsUtils.sendMessage(currentItem).then((res) => {
+        console.log(res);
+        message.success('发送成功，正在跳转');
+        setTimeout(() => {
+          window.open(`https://ivg37-qiaaa-aaaab-aaaga-cai.ic0.app/#!/game/${userName}/.${currentItem?.name}`);
+        }, 2000)
+      })
+    } else {
+      message.error('对方未创建好友合约');
+    }
   };
 
   const onSearch = async(value) => {
@@ -71,7 +73,7 @@ function FriendTab(props) {
     <div className="friendList">
       <Search
         loading={searchLoading}
-        placeholder="请输入好友名称+地址冒号分隔"
+        placeholder="请输入好友地址"
         allowClear
         enterButton="添加"
         size="middle"
@@ -100,7 +102,6 @@ function FriendTab(props) {
                 placement="topRight"
                 title={`是否向好友${currentItem?.name}发送游戏邀请，消息发送后直接进入游戏房间等待?`}
                 onConfirm={() => handleOk(currentItem)}
-                onCancel={handleCancel}
                 okText="发送"
                 cancelText="取消"
               >

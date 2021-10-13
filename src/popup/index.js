@@ -12,7 +12,11 @@ function Popup() {
                 <Route key="/login" path="/login" component={Login} />
                 <Route path="/home" path="/home" component={Home} />
                 <Route path="/ethAccount" path="/ethAccount" component={EthAccount} />
-                <Redirect to="/home"/>
+                {
+                    window.localStorage.getItem('wallet') == null  
+                        ? <Redirect to="/login"/>
+                        : <Redirect to="/home"/>
+                }
             </Switch>
         </HashRouter>
     )

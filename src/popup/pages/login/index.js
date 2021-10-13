@@ -1,41 +1,39 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Button, Input } from 'antd'
-import carrot from './carrot.svg'
-import { apiReqs } from '@/api'
+import loginWhite from './logo-black.png'
 import './login.styl'
+import ContractsUtils from "../../../utils/contractsUtils.js"
 
 function Login(props) {
+	const [privateKey, setPrivateKey] = useState('');
 
-	const login = () => {
-		apiReqs.signIn({
-			success: (res) => {
-				console.log(res)
-				alert(res.data.nickname)
-				props.history.push('/home')
-			},
-			fail: (res) => {
-				alert(res)
-			}
-		})	
+	const importAccount = () => {
+		try {
+			let wallet = ContractsUtils.getPrivateKeyWallet(privateKey);
+			window.localStorage.setItem("wallet", JSON.stringify(privateKey))
+			props.history.push('/home')
+		} catch (err) {
+			console.log(err);
+			alert('私钥格式有误')
+		}
+	}
+
+	const keyChange = (e) => {
+		setPrivateKey(e.target.value)
 	}
 
 	return (
 		<div className="layout-login">
-			<img src={carrot} alt="" className="carrot" />
+			<img src={loginWhite} alt="" className="carrot" />
 			<div className="login-con">
 				<div className="ipt-con">
 					<Input
-						placeholder="请输入账号"
 						size="large"
+						onChange={keyChange.bind(this)}
+						placeholder="请粘贴您的私钥导入账户"
 					/>
 				</div>
-				<div className="ipt-con">
-					<Input.Password
-						placeholder="请输入密码"
-						size="large"
-					/>
-				</div>
-				<Button type="primary" size="large" onClick={login}>登录</Button>
+				<Button type="primary" size="large" onClick={importAccount}>导入</Button>
 			</div>
 		</div>
 	);

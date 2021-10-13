@@ -7,10 +7,12 @@ let ContractsUtils = {
 
   // 生成一个infuraProvider实例
   getEthersProvider:() => {
-    return new ethers.providers.JsonRpcProvider("https://rinkeby.infura.io/v3/118060a28fc04ba3abff5aa8530ce0e9");
+    return new ethers.providers.JsonRpcProvider(
+      "https://rinkeby.infura.io/v3/118060a28fc04ba3abff5aa8530ce0e9"
+    );
   },
 
-  // wallet实例方式1 - 创建一个随机
+  // wallet实例方式1 - 创建一个随机账户
   getRandomWallet:() => {
     let wallet = ethers.Wallet.createRandom();
     return wallet.connect(ContractsUtils.getEthersProvider());
@@ -35,25 +37,22 @@ let ContractsUtils = {
     return wallet.connect(ContractsUtils.getEthersProvider());
   },
 
-  // rpcCatch统一方法
-  rpcCatch: (err) => {
-    if (err.code === 4001) {
-      console.log('Please connect to Samurai.');
-    } else {
-      console.error(err);
-    }
+  // wallet实例方式5 - 通过localStorage中获取
+  getLocalStorageWallet:() => {
+    let wallet = new ethers.Wallet(JSON.parse(window.localStorage.getItem("wallet")));
+    return wallet.connect(ContractsUtils.getEthersProvider());
   },
 
   //合约方法 - 1.创建relationContract对象
   createRelationContract: () => {
-    let wallet = ContractsUtils.getPrivateKeyWallet(PrivateKey);
+    let wallet = ContractsUtils.getLocalStorageWallet();
     var relationContract = new ethers.Contract(RelationFactoryContractAddress, relationFactoryContractABI, wallet);
     return relationContract;
   },
 
   //合约方法 - 2.获取当前用户的好友合约地址
   getRelationAddress: async() => {
-    let wallet = ContractsUtils.getPrivateKeyWallet(PrivateKey);
+    let wallet = ContractsUtils.getLocalStorageWallet();
     var relationContract = ContractsUtils.createRelationContract();
     let relationAddress = await relationContract.getAddressListContract(wallet.address);
     if (relationAddress == undefined || relationAddress == null || relationAddress == "0x0000000000000000000000000000000000000000") {
@@ -66,7 +65,7 @@ let ContractsUtils = {
 
   //合约方法 - 3.获取addressListContract对象
   createAddressListContract: async() => {
-    let wallet = ContractsUtils.getPrivateKeyWallet(PrivateKey);
+    let wallet = ContractsUtils.getLocalStorageWallet();
     var addressListContract = new ethers.Contract(await ContractsUtils.getRelationAddress(), addressListContractABI, wallet);
     return addressListContract;
   },
@@ -83,9 +82,9 @@ let ContractsUtils = {
   addFriend: async(value) => {
     var addressListContract = await ContractsUtils.createAddressListContract();
     return  addressListContract.addFriend(
-      value.split(':')[1],//好友的地址
-      value.split(':')[0],//好友备注
-      RelationFactoryContractAddress//好友来源，暂时写死
+      value, //好友的地址
+      ContractsUtils.getUserName(value), //好友备注
+      RelationFactoryContractAddress //好友来源，暂时写死
     );
   },
 
@@ -109,16 +108,17 @@ let ContractsUtils = {
         })
       }
     }
-    return friendList
+    return friendList;
   },
 
   //合约方法 - 7.向好友发送消息
   sendMessage: async(currentItem) => {
     console.log(currentItem);
     var addressListContract = await ContractsUtils.createAddressListContract();
+    var userName = ContractsUtils.getUserName(ContractsUtils.getLocalStorageWallet().address)
     return addressListContract.sendMessage(
       currentItem?.identity, 
-      `https://ivg37-qiaaa-aaaab-aaaga-cai.ic0.app/#!/game/${currentItem?.name}/.Bob`
+      `https://ivg37-qiaaa-aaaab-aaaga-cai.ic0.app/#!/game/${currentItem?.name}/.${userName}`
     )
   },
 
@@ -132,63 +132,23 @@ let ContractsUtils = {
     });
   },
 
-  // 合约方法 - 与好友联系
-  contactWithMyFriend: async () => {
-
-    //创建wallet对象
-    let wallet = ContractsUtils.getPrivateKeyWallet(PrivateKey);
-    console.log(wallet);
-
-    //1.创建relationFactoryContract对象
-    var relationFactoryContract = new ethers.Contract(RelationFactoryContractAddress, relationFactoryContractABI, wallet);
-
-    //2.如果我的好友合约不存在，则进行创建
-    let addressContractAddress = await relationFactoryContract.getAddressListContract(wallet.address);
-    if (addressContractAddress == undefined || addressContractAddress == null || addressContractAddress == "0x0000000000000000000000000000000000000000") {
-        //创建好友合约
-        await relationFactoryContract.createAddressListContract(wallet.address)
-        addressContractAddress = await relationFactoryContract.getAddressListContract(wallet.address);
-    }
-    console.log("当前用户的好友合约地址：" + addressContractAddress);
-
-
-    //3. 创建addressListContract对象
-    var addressListContract = new ethers.Contract(addressContractAddress, addressListContractABI, wallet);
-    let ownerNickName = await addressListContract.ownerNickName();
-    let ownerAvatar = await addressListContract.ownerAvatar();
-    console.log("当前用户的昵称" + ownerNickName + ",当前用户的头像：" + ownerAvatar);
-
-    //4.添加好友
-    // await addressListContract.addFriend(
-    //     "0x144fa3569c9b4ae7908779deefc9101222a84fa7",//好友的地址
-    //     "shadow1",//好友备注
-    //     RelationFactoryContractAddress//好友来源，暂时写死
-    // )
-    // console.log("添加好友成功");
-
-    //5.获取我的好友数
-    let friendInfoSize = await addressListContract.friendSize();
-    friendInfoSize = parseInt(friendInfoSize);
-    console.log(friendInfoSize);
-    //遍历，获取好友列表
-    if (friendInfoSize > 0) {
-        for (var i = 1; i <= friendInfoSize; i++) {
-            let friendAddress = await addressListContract.indexAddressMap(i);
-            let friendInfo = await addressListContract.friendMap(friendAddress);
-            console.log(friendInfo);
-            console.log("好友的地址：" + friendInfo.identity + ",好友的名称" + friendInfo.name);
-        }
-    }
-
-    //6.发送消息
-    await addressListContract.sendMessage("0xe999547C0465726828F9953a087EC0A566bD1932", "发送的消息!")
-    console.log("您的消息已上链！！！")
-
-    //7.监听用户发送的消息
-    addressListContract.on('SendMessage', (from, to, value) => {
-      console.log('I received ' + value.toString() + ' tokens from ' + from);
-    });
+  // 通用方法 - 获取用户昵称（默认地址: 前4-后4 ）
+  getUserName: (address) => {
+    return address.substring(0, 4)+"-"+address.substr(address.length-4);
   },
+
+  // 通过方法 - 判断好友是否创建好友合约
+  isCreateRelationAddress: async(address) => {
+    var relationContract = ContractsUtils.createRelationContract();
+    let relationAddress = await relationContract.getAddressListContract(address);
+    console.log(relationAddress);
+    if(relationAddress == '0x0000000000000000000000000000000000000000') {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
 }
 
 export default ContractsUtils;
