@@ -1,7 +1,7 @@
 {
-  "name": "Chrome插件Demo",
+  "name": "IC contracts",
   "version": "1.0",
-  "description": "React开发chrome插件Demo。",
+  "description": "IC contracts 通讯录产品",
   "icons": {
     "16": "images/logo-black.png",
     "48": "images/logo-black.png",

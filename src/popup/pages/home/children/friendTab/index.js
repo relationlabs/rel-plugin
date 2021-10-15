@@ -21,6 +21,12 @@ function FriendTab(props) {
     getFriendList();
   }, [])
 
+
+  useEffect(() => {
+    console.log("friendList ========> ");
+    console.log(friendList);
+  }, [friendList])
+
   const getFriendList = () => {
     setLoading(true);
     ContractsUtils.getFriendList().then((res) => {
@@ -55,8 +61,8 @@ function FriendTab(props) {
 
   const onSearch = async(value) => {
     if (value != '' && value != null && value != undefined) {
-      let sameList = friendList.filter((item) => item.identity == value.split(':')[1]);
-      if (sameList.length > 0) {
+      let sameList = friendList?.filter((item) => item.identity == value.split(':')[1]);
+      if (sameList?.length > 0) {
         message.error("地址已添加！");
       } else {
         try {

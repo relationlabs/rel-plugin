@@ -9,9 +9,9 @@ function Login(props) {
 
 	const importAccount = () => {
 		try {
-			// let wallet = ContractsUtils.getPrivateKeyWallet(privateKey);
 			window.localStorage.setItem("wallet", JSON.stringify(privateKey))
-			if(window.localStorage.getItem("wallet") != "") {
+			let wallet = ContractsUtils.getLocalStorageWallet();
+			if(wallet != null){
 				props.history.push('/home')
 			} else {
 				message.error('私钥格式有误')

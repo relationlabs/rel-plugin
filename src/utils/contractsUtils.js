@@ -64,6 +64,7 @@ let ContractsUtils = {
       return wallet.connect(ContractsUtils.getEthersProvider());
     } catch(err) {
       console.log(err);
+      return null;
     }
   },
 
