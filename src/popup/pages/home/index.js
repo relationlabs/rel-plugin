@@ -6,26 +6,31 @@ import MessageTab from './children/messageTab/index'
 import TestTab from './children/testTab/index'
 import useAccount from '../../useAccount.js'
 import LogoGather from '../motion/LogoGather/index';
-import { GithubOutlined, TwitterOutlined, FacebookOutlined, LockFilled} from '@ant-design/icons';
+import { GithubOutlined, TwitterOutlined, FacebookOutlined, LoginOutlined} from '@ant-design/icons';
 import ContractsUtils from '../../../utils/contractsUtils.js';
 
 const { TabPane } = Tabs;
 
 function Home(props) {
+  const [tabKey, setTapKey] = useState(1);
   const [message, setMessage] = useState(null);
   const [address, setAddress] = useState('');
 
   useEffect(() => {
     listenMessage();
-    setAddress(ContractsUtils.getLocalStorageWallet().address);
+    setAddress(ContractsUtils.getLocalStorageWallet()?.address);
   }, [])
 
   const callback = (key) => {
-    console.log(key);
+    setTapKey(key);
   }
 
   const toLogin = () => {
-		props.history.push('/login')
+		props.history.push('/login');
+    window.localStorage.setItem("wallet", '');
+    window.localStorage.setItem("friendSize", 0);
+    window.localStorage.setItem("friendList", []);
+    window.localStorage.setItem("messageList", []);
 	}
 
   const toEthAccount = () => {
@@ -37,13 +42,23 @@ function Home(props) {
   }
 
   const listenMessage = async() => {
-    console.log("合约方法 - 9.监听自己收到的消息");
-    var addressListContract = await ContractsUtils.createAddressListContract();
-    addressListContract.on('GetMessage', (from, to, value) => {
-      console.log(value);
-      console.log('I received ' + value?.args?.message + ' tokens from ' + from);
-      setMessage(value);
-    });
+    try {
+      let messageList = [];
+      if(!!window.localStorage.getItem("messageList") == true){
+        messageList = [...JSON.parse(window.localStorage.getItem("messageList"))]
+      }
+      var addressListContract = await ContractsUtils.createAddressListContract();
+      addressListContract.on('GetMessage', (from, to, value) => {
+        messageList.push({
+          sender: value.args.sender,
+          message: value.args.message,
+        });
+        window.localStorage.setItem("messageList", JSON.stringify(messageList));
+        setMessage(messageList);
+      });
+    } catch(err) {
+      console.log(err)
+    }
   }
 
   return (
@@ -58,7 +73,7 @@ function Home(props) {
         />
         <div className="bg">
           <div className="lock">
-            <LockFilled className="lockStyle" onClick={toLogin}/>
+            <LoginOutlined className="lockStyle" onClick={toLogin}/>
           </div>
           <div className="avt">
             <img 
@@ -68,9 +83,6 @@ function Home(props) {
             >
             </img>
           </div>
-          {/* <div className="static">
-            <div className="data">IC - Contact</div>
-          </div> */}
           <div className="address" >
             <div className="data">IC - Contact</div>
             <div className="data">{ContractsUtils.getUserName(address)}</div>
@@ -85,10 +97,10 @@ function Home(props) {
 
       <div className="section-two">
         <Tabs defaultActiveKey="1" onChange={callback} centered>
-          {/* <TabPane tab="合约测试" key="0"><TestTab/></TabPane> */}
-          <TabPane tab="消息列表" key="1"><MessageTab message={message}/></TabPane>
-          <TabPane tab="通讯录" key="2"><FriendTab/></TabPane>
-          <TabPane tab="个人设置" key="3">{/* <DappTab/> */}</TabPane>
+          <TabPane tab="消息列表" key="1">{tabKey == 1 && <MessageTab message={message}/>}</TabPane>
+          <TabPane tab="通讯录" key="2">{tabKey == 2 && <FriendTab/>}</TabPane>
+          <TabPane tab="个人设置" key="3">{tabKey == 3 && <TestTab/>}</TabPane>
+          {/* <TabPane tab="合约测试" key="4"><TestTab/></TabPane> */}
         </Tabs>
       </div>
     </div>

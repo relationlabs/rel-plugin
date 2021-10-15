@@ -1,15 +1,14 @@
 import React, {useState, useEffect} from 'react'
 import './messageTab.styl'
-import { CopyOutlined, ArrowRightOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined } from '@ant-design/icons';
 import EmptyStatus from '../../../../../content/components/emptyStatus';
 
 function MessageTab(props) {
   const [messageList, setMessageList] = useState([]);
 
   useEffect(() => {
-    console.log(props?.message);
-    if(props?.message != null) {
-      setMessageList([props?.message])
+    if(!!window.localStorage.getItem("messageList") == true){
+      setMessageList(JSON.parse(window.localStorage.getItem("messageList")))
     }
   }, [props])
 
@@ -19,21 +18,21 @@ function MessageTab(props) {
 
   return (
     <div className="messageTab">
-      { messageList.length !== 0 &&  
+      { messageList != null && messageList.length != 0 &&  
         messageList.map((item,index) => {
           return <div className="item" key={index}>
             <div className="item-left">
               <div className="item-info">
-                {formatAddress(item?.args?.sender)}邀请你一起游戏 on IC
+                {formatAddress(item?.sender)} 邀请你一起游戏 on IC
               </div>
             </div>
             <div className="message" >
-              <a href={item?.args?.message} target='_blank'><ArrowRightOutlined /></a>
+              <a href={item?.message} target='_blank'><ArrowRightOutlined /></a>
             </div>
           </div>
         })
       }
-      { messageList.length === 0 && <EmptyStatus/> }
+      { (messageList == null || messageList.length === 0) && <EmptyStatus/> }
     </div>
   )
 }

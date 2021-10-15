@@ -15,6 +15,9 @@ function FriendTab(props) {
   const [friendList, setFriendList] = useState([]);
 
   useEffect(() => {
+    if(!!window.localStorage.getItem("friendList") == true){
+      setFriendList(JSON.parse(window.localStorage.getItem("friendList")))
+    }
     getFriendList();
   }, [])
 
@@ -51,20 +54,23 @@ function FriendTab(props) {
   };
 
   const onSearch = async(value) => {
-    if (value == '' || value == null || value == undefined) {
-      message.error("输入格式有误")
-    } else {
+    if (value != '' && value != null && value != undefined) {
       let sameList = friendList.filter((item) => item.identity == value.split(':')[1]);
       if (sameList.length > 0) {
         message.error("地址已添加！");
       } else {
-        setSearchLoading(true);
-        var tx = await ContractsUtils.addFriend(value)
-        // 操作还没完成，需要等待挖矿
-        await tx.wait();
-        setSearchLoading(false);
-        message.success("好友添加成功");
-        getFriendList();
+        try {
+          setSearchLoading(true);
+          var tx = await ContractsUtils.addFriend(value)
+          // 操作还没完成，需要等待挖矿
+          await tx.wait();
+          getFriendList();
+          setSearchLoading(false);
+          message.success("好友添加成功");
+        } catch(err) {
+          setSearchLoading(false);
+          message.success("地址格式有误");
+        }
       }
     }
   };
@@ -80,7 +86,7 @@ function FriendTab(props) {
         onSearch={onSearch}
       />
     <Spin indicator={antIcon} spinning={loading}>
-      { friendList.length !== 0 &&
+      { friendList != null && friendList.length !== 0 &&
         friendList.map((item,index) => {
           return <div className="item" key={index}>
             <div className="item-left">
@@ -110,7 +116,7 @@ function FriendTab(props) {
           </div>
         })
       }
-      { friendList.length === 0 &&  loading == false && <EmptyStatus/> }
+      { friendList != null && friendList.length === 0 &&  loading == false && <EmptyStatus/> }
       </Spin>
     </div>
   )

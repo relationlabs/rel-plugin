@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { Button, Input } from 'antd'
+import { Button, Input, message } from 'antd'
 import loginWhite from './logo-black.png'
 import './login.styl'
 import ContractsUtils from "../../../utils/contractsUtils.js"
@@ -9,12 +9,15 @@ function Login(props) {
 
 	const importAccount = () => {
 		try {
-			let wallet = ContractsUtils.getPrivateKeyWallet(privateKey);
+			// let wallet = ContractsUtils.getPrivateKeyWallet(privateKey);
 			window.localStorage.setItem("wallet", JSON.stringify(privateKey))
-			props.history.push('/home')
+			if(window.localStorage.getItem("wallet") != "") {
+				props.history.push('/home')
+			} else {
+				message.error('私钥格式有误')
+			}
 		} catch (err) {
-			console.log(err);
-			alert('私钥格式有误')
+			message.error('私钥格式有误')
 		}
 	}
 
@@ -27,8 +30,9 @@ function Login(props) {
 			<img src={loginWhite} alt="" className="carrot" />
 			<div className="login-con">
 				<div className="ipt-con">
-					<Input
+					<Input.Password
 						size="large"
+						visibilityToggle={false}
 						onChange={keyChange.bind(this)}
 						placeholder="请粘贴您的私钥导入账户"
 					/>
