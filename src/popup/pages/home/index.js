@@ -8,6 +8,7 @@ import useAccount from '../../useAccount.js'
 import LogoGather from '../motion/LogoGather/index';
 import { GithubOutlined, TwitterOutlined, FacebookOutlined, LoginOutlined} from '@ant-design/icons';
 import ContractsUtils from '../../../utils/contractsUtils.js';
+import LogoSvg from '../motion/LogoGather/IC.svg';
 
 const { TabPane } = Tabs;
 
@@ -65,11 +66,12 @@ function Home(props) {
     <div className="layout-home">
       <div className="section-one">
         <LogoGather
-          width={120}
-          height={120}
-          pixSize={10}
-          pointSizeMin={5}
-          image='https://zos.alipayobjects.com/rmsportal/TOXWfHIUGHvZIyb.svg'
+          width={270}
+          height={180}
+          pixSize={12}
+          pointSizeMin={8}
+          image={LogoSvg}
+          // image='https://zos.alipayobjects.com/rmsportal/TOXWfHIUGHvZIyb.svg'
         />
         <div className="bg">
           <div className="lock">
