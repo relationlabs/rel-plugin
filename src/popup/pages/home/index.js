@@ -8,16 +8,9 @@ import TestTab from './children/testTab/index'
 import LogoGather from '../motion/LogoGather/index';
 import { GithubOutlined, TwitterOutlined, FacebookOutlined, LoginOutlined} from '@ant-design/icons';
 import ContractsUtils from '../../../utils/contractsUtils.js';
-import LogoSvg from '../motion/LogoGather/IC.svg';
+// import LogoSvg from '../motion/LogoGather/IC.svg';
 import DfinityLogo from './dfinity.png';
 // import { Ed25519KeyIdentity } from "@dfinity/identity";
-
-/**
- * #29acde
- * #f88230
- * #ee3d4c
- * #772384
- */
 
 const { TabPane } = Tabs;
 
@@ -114,13 +107,17 @@ function Home(props) {
             <div className="data">IC - Contact</div>
             <div className="data">{ContractsUtils.getUserName(address)}</div>
           </div>
+          <div className="dfinityIdentify">
+            <div className="data">Identify Anchor</div>
+            <div className="data">{ContractsUtils.getUserName(address)}</div>
+          </div>
           <div className="chainList">
-            <span style={{ height: 30, width: 30, display: 'inline-block', position: 'relative' }}>
-              <img src={DfinityLogo} style={{ position: 'absolute', top: -5, right: 5 }} />
-            </span>
             <GithubOutlined spin={false} className="iconStyle" onClick={toEthAccount}/>
             <TwitterOutlined spin={false} className="iconStyle" />
             <FacebookOutlined spin={false} className="iconStyle" />
+            <span className="iconStyle" style={{ height: 30, width: 30, display: 'inline-block', position: 'relative' }}>
+              <img src={DfinityLogo} style={{ position: 'absolute', top: -2, left: 0, width: 26 }} />
+            </span>
           </div>
         </div>
       </div>
