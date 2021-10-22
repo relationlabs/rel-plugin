@@ -9,7 +9,15 @@ import LogoGather from '../motion/LogoGather/index';
 import { GithubOutlined, TwitterOutlined, FacebookOutlined, LoginOutlined} from '@ant-design/icons';
 import ContractsUtils from '../../../utils/contractsUtils.js';
 import LogoSvg from '../motion/LogoGather/IC.svg';
+import DfinityLogo from './dfinity.png';
 // import { Ed25519KeyIdentity } from "@dfinity/identity";
+
+/**
+ * #29acde
+ * #f88230
+ * #ee3d4c
+ * #772384
+ */
 
 const { TabPane } = Tabs;
 
@@ -83,12 +91,12 @@ function Home(props) {
     <div className="layout-home">
       <div className="section-one">
         <LogoGather
-          width={270}
-          height={180}
+          width={150}
+          height={150}
           pixSize={12}
           pointSizeMin={8}
-          image={LogoSvg}
-          // image='https://zos.alipayobjects.com/rmsportal/TOXWfHIUGHvZIyb.svg'
+          // image={LogoSvg}
+          image='https://zos.alipayobjects.com/rmsportal/TOXWfHIUGHvZIyb.svg'
         />
         <div className="bg">
           <div className="lock">
@@ -107,6 +115,9 @@ function Home(props) {
             <div className="data">{ContractsUtils.getUserName(address)}</div>
           </div>
           <div className="chainList">
+            <span style={{ height: 30, width: 30, display: 'inline-block', position: 'relative' }}>
+              <img src={DfinityLogo} style={{ position: 'absolute', top: -5, right: 5 }} />
+            </span>
             <GithubOutlined spin={false} className="iconStyle" onClick={toEthAccount}/>
             <TwitterOutlined spin={false} className="iconStyle" />
             <FacebookOutlined spin={false} className="iconStyle" />
