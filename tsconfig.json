@@ -1,9 +1,55 @@
 {
     "compilerOptions": {
-      "target": "es2018",        /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019' or 'ESNEXT'. */
-      "lib": ["ES2018", "DOM"],  /* Specify library files to be included in the compilation. */
-      "allowJs": true,           /* Allow javascript files to be compiled. */
-      "jsx": "react",            /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
+        "sourceMap": true,
+        "target": "es6",
+        "jsx": "react",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "declaration": false,
+        "noImplicitAny": false,
+        "noImplicitReturns": false,
+        "noUnusedLocals": false,
+        "removeComments": true,
+        "strictNullChecks": false,
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "outDir": "dist",
+        "lib": [
+            "es6",
+            "es7",
+            "dom"
+        ],
+        "baseUrl": "./",
+        "paths": {
+            "@assets/*": [
+                "./src/assets/*"
+            ],
+            "@views/*": [
+                "./src/views/*"
+            ],
+            "@commonModules/*": [
+                "./src/commonModules/*"
+            ],
+            "@globalComponents/*": [
+                "./src/globalComponents/*"
+            ],
+            "@/api": [
+                "./src/api/index"
+            ],
+            "@/mock": [
+                "./src/mock.js"
+            ],
+            "@mock/*": [
+                "./mock/*"
+            ]
+        }
     },
-    "include": ["src/**/*"],
+    "exclude": [
+        "dist",
+        "buildResult",
+        "node_modules"
+    ]
 }

@@ -1,0 +1,43 @@
+{
+  "name": "IC Contact",
+  "version": "1.0",
+  "description": "IC Contact 通讯录产品",
+  "icons": {
+    "16": "logo-black.png",
+    "48": "logo-black.png",
+    "128": "logo-black.png"
+  },
+  "manifest_version": 2,
+  "browser_action": {
+    "default_icon": "logo-black.png",
+    "default_title": "IC Contact",
+    "default_popup": "index.html"
+  },
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "permissions": [
+    "tabs",
+    "declarativeContent",
+    "storage",
+    "notifications"
+  ],
+  "web_accessible_resources": ["insert.js"]
+}
