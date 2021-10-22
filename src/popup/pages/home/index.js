@@ -1,14 +1,15 @@
 import React, {useState, useEffect} from 'react'
 import './home.styl'
 import { Tabs } from 'antd'
+import { BigNumber } from "ethers";
 import FriendTab from './children/friendTab/index'
 import MessageTab from './children/messageTab/index'
 import TestTab from './children/testTab/index'
-import useAccount from '../../useAccount.js'
 import LogoGather from '../motion/LogoGather/index';
 import { GithubOutlined, TwitterOutlined, FacebookOutlined, LoginOutlined} from '@ant-design/icons';
 import ContractsUtils from '../../../utils/contractsUtils.js';
 import LogoSvg from '../motion/LogoGather/IC.svg';
+// import { Ed25519KeyIdentity } from "@dfinity/identity";
 
 const { TabPane } = Tabs;
 
@@ -19,6 +20,7 @@ function Home(props) {
 
   useEffect(() => {
     listenMessage();
+    handleAccountsChanged();
     setAddress(ContractsUtils.getLocalStorageWallet()?.address);
   }, [])
 
@@ -60,6 +62,21 @@ function Home(props) {
     } catch(err) {
       console.log(err)
     }
+  }
+
+  const handleAccountsChanged = async (arr) => {
+    var wallet = ContractsUtils.getLocalStorageWallet(); // ethers.utils.verifyMessage(message , signature);
+    let flatSig = await wallet.signMessage(ContractsUtils.getUserName(address) ?? 'IC contracts');
+    const array = flatSig
+      .replace("0x", "")
+      .match(/.{4}/g)
+      .map((hexNoPrefix) => BigNumber.from("0x" + hexNoPrefix).toNumber());
+    const uint8Array = Uint8Array.from(array);
+    console.log(uint8Array);
+    // console.log(Ed25519KeyIdentity);
+    // const id = Ed25519KeyIdentity.generate(uint8Array)
+    // console.log(id)
+    // console.log(id.getPrincipal().toString())
   }
 
   return (
