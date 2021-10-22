@@ -140,10 +140,12 @@ const LogoGather = ({
       clearTimer();
       setTimeout(() => {
         updateTweenData();
+        /*
         setTimeout(() => {
           updateTweenData();
           if (!assistant.current.interval) assistant.current.interval = ticker.interval(updateTweenData, assistant.current.intervalTime);
         }, 3000)
+        */
       }, 3000); 
     }
   }, [children, updateTweenData]);
