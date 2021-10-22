@@ -38,6 +38,7 @@ function Login(props) {
 					/>
 				</div>
 				<Button type="primary" size="large" onClick={importAccount}>导入</Button>
+				<p className="commit">此版本尚不稳定，请输入测试账号私钥</p>
 			</div>
 		</div>
 	);
