@@ -19,7 +19,7 @@ function Home(props) {
   const [tabKey, setTapKey] = useState(1);
   const [message, setMessage] = useState(null);
   const [address, setAddress] = useState('');
-  const [dfinityKey, setDfinityKey] = useState('');
+  const [dfinityPrincipal, setDfinityPrincipal] = useState('');
 
   useEffect(() => {
     listenMessage();
@@ -75,9 +75,9 @@ function Home(props) {
       .match(/.{4}/g)
       .map((hexNoPrefix) => BigNumber.from("0x" + hexNoPrefix).toNumber());
     const uint8Array = Uint8Array.from(array);
-    const id = Ed25519KeyIdentity.generate(uint8Array)
-    const dfinityKey = id.getPrincipal().toString();
-    setDfinityKey(dfinityKey);
+    const id = Ed25519KeyIdentity.generate(uint8Array);
+    const principal = id.getPrincipal().toString();
+    setDfinityPrincipal(principal);
   }
 
   return (
@@ -109,7 +109,7 @@ function Home(props) {
           </div>
           <div className="dfinityIdentify">
             <div className="data">Identify Anchor</div>
-            <div className="data">{ContractsUtils.getUserName(dfinityKey)}</div>
+            <div className="data">{ContractsUtils.getUserName(dfinityPrincipal)}</div>
           </div>
           <div className="chainList">
             <GithubOutlined spin={false} className="iconStyle" onClick={toEthAccount}/>
