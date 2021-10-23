@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import './home.styl'
-import { Button, Radio, Tabs, Switch } from 'antd'
+import { Button, Radio, Tabs, Switch, message } from 'antd'
 import { BigNumber } from "ethers";
 import FriendTab from './children/friendTab/index'
 import MessageTab from './children/messageTab/index'
@@ -18,9 +18,9 @@ const { TabPane } = Tabs;
 
 function Home(props) {
   const [tabKey, setTapKey] = useState(1);
-  const [message, setMessage] = useState(null);
+  const [messageArr, setMessageArr] = useState(null);
   const [address, setAddress] = useState('');
-  const [dfinityPrincipal, setDfinityPrincipal] = useState('');
+  const [dfinityKey, setDfinityKey] = useState('');
 
   useEffect(() => {
     listenMessage();
@@ -61,7 +61,7 @@ function Home(props) {
           message: value.args.message,
         });
         window.localStorage.setItem("messageList", JSON.stringify(messageList));
-        setMessage(messageList);
+        setMessageArr(messageList);
       });
     } catch(err) {
       console.log(err)
@@ -69,16 +69,23 @@ function Home(props) {
   }
 
   const handleAccountsChanged = async (arr) => {
-    var wallet = ContractsUtils.getLocalStorageWallet(); // ethers.utils.verifyMessage(message , signature);
-    let flatSig = await wallet.signMessage(ContractsUtils.getUserName(address) ?? 'IC contracts');
-    const array = flatSig
-      .replace("0x", "")
-      .match(/.{4}/g)
-      .map((hexNoPrefix) => BigNumber.from("0x" + hexNoPrefix).toNumber());
-    const uint8Array = Uint8Array.from(array);
-    const id = Ed25519KeyIdentity.generate(uint8Array);
-    const principal = id.getPrincipal().toString();
-    setDfinityPrincipal(principal);
+    if(!!window.localStorage.getItem("dfinityKey") == true) {
+      setDfinityKey(window.localStorage.getItem("dfinityKey"));
+    } else {
+      var wallet = ContractsUtils.getLocalStorageWallet();
+      let flatSig = await wallet.signMessage(ContractsUtils.getUserName(address) ?? 'IC contracts');
+      const array = flatSig
+        .replace("0x", "")
+        .match(/.{4}/g)
+        .map((hexNoPrefix) => BigNumber.from("0x" + hexNoPrefix).toNumber());
+      const uint8Array = Uint8Array.from(array);
+      const id = Ed25519KeyIdentity.generate(uint8Array)
+      const dfinityKey = id.getPrincipal().toString();
+      window.localStorage.setItem("dfinityKey", dfinityKey);
+      console.log('Dfinity身份生成：' + dfinityKey);
+      message.success('Dfinity身份已生成');
+      setDfinityKey(dfinityKey);
+    }
   }
 
   return (
@@ -119,8 +126,8 @@ function Home(props) {
             <div className="data">{ContractsUtils.getUserName(address)}</div>
           </div>
           <div className="dfinityIdentify">
-            <div className="data">Identify Anchor</div>
-            <div className="data">{ContractsUtils.getUserName(dfinityPrincipal)}</div>
+            <div className="data">Identity principal</div>
+            <div className="data">{ContractsUtils.getUserName(dfinityKey)}</div>
           </div>
           <div className="chainList">
             <GithubOutlined spin={false} className="iconStyle" onClick={toEthAccount}/>
@@ -135,7 +142,7 @@ function Home(props) {
 
       <div className="section-two">
         <Tabs defaultActiveKey="1" onChange={callback} centered>
-          <TabPane tab="消息列表" key="1">{tabKey == 1 && <MessageTab message={message}/>}</TabPane>
+          <TabPane tab="消息列表" key="1">{tabKey == 1 && <MessageTab message={messageArr}/>}</TabPane>
           <TabPane tab="通讯录" key="2">{tabKey == 2 && <FriendTab/>}</TabPane>
           <TabPane tab="个人设置" key="3">{tabKey == 3 && <TestTab/>}</TabPane>
           {/* <TabPane tab="合约测试" key="4"><TestTab/></TabPane> */}
