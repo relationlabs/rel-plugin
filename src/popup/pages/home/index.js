@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import './home.styl'
-import { Tabs } from 'antd'
+import { Button, Radio, Tabs, Switch } from 'antd'
 import { BigNumber } from "ethers";
 import FriendTab from './children/friendTab/index'
 import MessageTab from './children/messageTab/index'
@@ -10,6 +10,7 @@ import { GithubOutlined, TwitterOutlined, FacebookOutlined, LoginOutlined} from 
 import ContractsUtils from '../../../utils/contractsUtils.js';
 // import LogoSvg from '../motion/LogoGather/IC.svg';
 import DfinityLogo from './dfinity.png';
+import MotokoSvg from './motoko.svg';
 import LogoWhite from '../../../assets/images/logo-white.png'
 import { Ed25519KeyIdentity } from "@dfinity/identity";
 
@@ -102,6 +103,16 @@ function Home(props) {
               src={LogoWhite}
             >
             </img>
+          </div>
+          <div className="switch">
+            {/** 
+            <Radio.Group size="small" defaultValue="eth" buttonStyle="solid">
+              <Radio.Button value="eth">以太坊</Radio.Button>
+              <Radio.Button value="dfinity">Dfinity</Radio.Button>
+            </Radio.Group>
+            */}
+            <img src={MotokoSvg} style={{ width: 23, marginRight: 6 }} />
+            <Switch size="small" />
           </div>
           <div className="address" >
             <div className="data">IC - Contact</div>
