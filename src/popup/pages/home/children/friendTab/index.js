@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import './friendTab.styl'
 import { Spin, Popconfirm, message, Input } from 'antd';
-import { CopyOutlined, MessageOutlined, LoadingOutlined } from '@ant-design/icons';
+import { CopyOutlined, MessageOutlined, LoadingOutlined, DeleteOutlined } from '@ant-design/icons';
 import EmptyStatus from '../../../../../content/components/emptyStatus';
 import ContractsUtils from '../../../../../utils/contractsUtils.js';
+import { nftArr } from '../../../../../constants/index.js';
 
 const { Search } = Input;
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
@@ -40,7 +41,7 @@ function FriendTab(props) {
   }
 
   const sendMessage = (item) => {
-    setCurrentItem(item)
+    setCurrentItem(item);
   }
 
   const handleOk = async(currentItem) => {
@@ -81,6 +82,20 @@ function FriendTab(props) {
     }
   };
 
+  const deleteFriendHandle = async(value) => {
+    try {
+      var tx = await ContractsUtils.deleteFriend(value)
+      console.log(tx);
+      // 操作还没完成，需要等待
+      await tx.wait();
+      getFriendList();
+      message.success("好友删除成功!");
+    } catch(err) {
+      console.log(err);
+      message.success("删除失败！");
+    }
+  };
+
   return (
     <div className="friendList">
       <Search
@@ -99,8 +114,8 @@ function FriendTab(props) {
               <img 
                 className="item-icon" 
                 loading="lazy" 
-                data-src={item.iconUrl} 
-                src={item.iconUrl}>
+                // data-src={item.iconUrl} 
+                src={nftArr[index%4]}>
               </img>
               <div className="item-info">
                 <div className="">{item.name}</div>
@@ -110,6 +125,7 @@ function FriendTab(props) {
                 </div>
               </div>
             </div>
+            <div>
               <Popconfirm
                 placement="topRight"
                 title={`是否向好友${currentItem?.name}发送游戏邀请，消息发送后直接进入游戏房间等待?`}
@@ -118,7 +134,17 @@ function FriendTab(props) {
                 cancelText="取消"
               >
                 <MessageOutlined onClick={() => sendMessage(item)}/>
+              </Popconfirm>&nbsp;&nbsp;&nbsp;
+              <Popconfirm
+                placement="topRight"
+                title={`是否确认删除好友${currentItem?.name}?`}
+                onConfirm={() => deleteFriendHandle(currentItem?.identity)}
+                okText="确认"
+                cancelText="取消"
+              >
+                <DeleteOutlined onClick={() => sendMessage(item)}/>
               </Popconfirm>
+            </div>
           </div>
         })
       }

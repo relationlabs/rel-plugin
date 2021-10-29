@@ -10,6 +10,7 @@ function Login(props) {
 	const importAccount = () => {
 		try {
 			window.localStorage.setItem("wallet", JSON.stringify(privateKey))
+			window.localStorage.setItem("nftNum", JSON.stringify(randomNum(0,4)));
 			let wallet = ContractsUtils.getLocalStorageWallet();
 			if(wallet != null){
 				props.history.push('/home')
@@ -24,6 +25,15 @@ function Login(props) {
 	const keyChange = (e) => {
 		setPrivateKey(e.target.value)
 	}
+
+	const randomNum = (minNum,maxNum) =>{ 
+    switch(arguments.length){ 
+      case 1: return parseInt(Math.random()*minNum+1,10); break; 
+      case 2: return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10); break; 
+      default: return 0; break; 
+    } 
+  } 
+
 
 	return (
 		<div className="layout-login">

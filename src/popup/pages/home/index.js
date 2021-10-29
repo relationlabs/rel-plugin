@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import './home.styl'
-import { Button, Radio, Tabs, Switch, message } from 'antd'
+import { Tabs, Switch, message } from 'antd'
 import { BigNumber } from "ethers";
 import FriendTab from './children/friendTab/index'
 import MessageTab from './children/messageTab/index'
@@ -8,11 +8,11 @@ import TestTab from './children/testTab/index'
 import LogoGather from './motion/LogoGather/index';
 import { GithubOutlined, TwitterOutlined, FacebookOutlined, LoginOutlined} from '@ant-design/icons';
 import ContractsUtils from '../../../utils/contractsUtils.js';
-// import LogoSvg from '../motion/LogoGather/IC.svg';
 import DfinityLogo from './dfinity.png';
 import MotokoSvg from './motoko.svg';
-import LogoWhite from '../../../assets/images/logo-white.png'
+// import LogoWhite from '../../../assets/images/logo-white.png'
 import { Ed25519KeyIdentity } from "@dfinity/identity";
+import { nftArr } from '../../../constants/index.js';
 
 const { TabPane } = Tabs;
 
@@ -21,6 +21,7 @@ function Home(props) {
   const [messageArr, setMessageArr] = useState(null);
   const [address, setAddress] = useState('');
   const [dfinityKey, setDfinityKey] = useState('');
+  const nftNum = JSON.parse(window.localStorage.getItem("nftNum")) ?? 0;
 
   useEffect(() => {
     listenMessage();
@@ -38,6 +39,8 @@ function Home(props) {
     window.localStorage.setItem("friendSize", 0);
     window.localStorage.setItem("friendList", []);
     window.localStorage.setItem("messageList", []);
+    window.localStorage.setItem("dfinityKey", '');
+    window.localStorage.setItem("nftNum", 0);
 	}
 
   const toEthAccount = () => {
@@ -45,7 +48,7 @@ function Home(props) {
 	}
 
   const formatAddress = (addressStr) => {
-    return addressStr.substring(0, 4)+"..."+addressStr.substr(addressStr.length-4);
+    return addressStr.substring(0, 3)+"..."+addressStr.substr(addressStr.length-3);
   }
 
   const listenMessage = async() => {
@@ -96,7 +99,6 @@ function Home(props) {
           height={150}
           pixSize={12}
           pointSizeMin={8}
-          // image={LogoSvg}
           image='https://zos.alipayobjects.com/rmsportal/TOXWfHIUGHvZIyb.svg'
         />
         <div className="bg">
@@ -106,8 +108,8 @@ function Home(props) {
           <div className="avt">
             <img 
               className="icon" 
-              loading="lazy" 
-              src={LogoWhite}
+              loading="lazy"
+              src={nftArr[nftNum]}
             >
             </img>
           </div>
@@ -119,7 +121,7 @@ function Home(props) {
             </Radio.Group>
             */}
             <img src={MotokoSvg} style={{ width: 23, marginRight: 6 }} />
-            <Switch size="small" />
+            <Switch size="small" defaultChecked/>
           </div>
           <div className="address" >
             <div className="data">IC - Contact</div>
@@ -127,7 +129,7 @@ function Home(props) {
           </div>
           <div className="dfinityIdentify">
             <div className="data">Identity principal</div>
-            <div className="data">{ContractsUtils.getUserName(dfinityKey)}</div>
+            <div className="data">{formatAddress(dfinityKey)}</div>
           </div>
           <div className="chainList">
             <GithubOutlined spin={false} className="iconStyle" onClick={toEthAccount}/>

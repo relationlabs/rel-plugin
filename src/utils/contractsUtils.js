@@ -133,6 +133,19 @@ let ContractsUtils = {
     }
   },
 
+  //合约方法 - 5.删除好友
+  deleteFriend: async(value) => {
+    try {
+      var addressListContract = await ContractsUtils.createAddressListContract();
+      return  addressListContract.deleteFriend(
+        value, //好友的地址
+        RelationFactoryContractAddress //好友来源，暂时写死
+      );
+    } catch(err) {
+      console.log(err);
+    }
+  },
+
   //合约方法 - 6.获取当前用户好友列表
   getFriendList: async() => {
     try {

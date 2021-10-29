@@ -1,3 +1,9 @@
+import nft0 from '../assets/images/nft1.jpg'
+import nft1 from '../assets/images/nft2.jpg'
+import nft2 from '../assets/images/nft3.jpg'
+import nft3 from '../assets/images/nft4.jpg'
+import nft4 from '../assets/images/nft5.jpg'
+
 // 测试账号私钥
 export let PrivateKey = '0x85f28e54c6beb676e7338eae8a0aa67a3c1f248c2bf3f229e5125dd921576834';
 
@@ -9,3 +15,5 @@ export let OpenInfoContractAddress = "0xD45608AB79d8C1c4cdbD590772fEAD9e1fb6feF8
 
 //关系工厂 合约
 export let RelationFactoryContractAddress = "0x51886255CF3a3a007C66dcD1588A1c8CB5abf583";
+
+export const nftArr = [nft0, nft1, nft2, nft3, nft4];
