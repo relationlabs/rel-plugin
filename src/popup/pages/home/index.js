@@ -124,7 +124,7 @@ function Home(props) {
             <Switch size="small" defaultChecked/>
           </div>
           <div className="address" >
-            <div className="data">IC - Contact</div>
+            <div className="data">IC - Contacts</div>
             <div className="data">{ContractsUtils.getUserName(address)}</div>
           </div>
           <div className="dfinityIdentify">

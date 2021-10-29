@@ -1,8 +1,9 @@
 import React, {useState} from 'react'
-import { Button, Input, message } from 'antd'
-import loginWhite from './logo-black.png'
+import { Input, message } from 'antd'
+import loginWhite from './logo-white.png'
 import './login.styl'
 import ContractsUtils from "../../../utils/contractsUtils.js"
+import { ArrowRightOutlined } from '@ant-design/icons'
 
 function Login(props) {
 	const [privateKey, setPrivateKey] = useState('');
@@ -40,14 +41,18 @@ function Login(props) {
 			<img src={loginWhite} alt="" className="carrot" />
 			<div className="login-con">
 				<div className="ipt-con">
-					<Input.Password
+					<Input
+						type="password"
 						size="large"
-						visibilityToggle={false}
+						suffix={
+							<div className="importBlock" onClick={importAccount}>
+								<ArrowRightOutlined style={{ color: 'white' }} />
+							</div>
+						}
 						onChange={keyChange.bind(this)}
 						placeholder="请粘贴您的私钥导入账户"
 					/>
 				</div>
-				<Button type="primary" size="large" onClick={importAccount}>导入</Button>
 			</div>
 		</div>
 	);

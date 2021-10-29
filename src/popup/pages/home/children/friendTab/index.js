@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import './friendTab.styl'
 import { Spin, Popconfirm, message, Input } from 'antd';
-import { CopyOutlined, MessageOutlined, LoadingOutlined, DeleteOutlined } from '@ant-design/icons';
+import { CopyOutlined, MessageOutlined, LoadingOutlined, DeleteOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import EmptyStatus from '../../../../../content/components/emptyStatus';
 import ContractsUtils from '../../../../../utils/contractsUtils.js';
 import { nftArr } from '../../../../../constants/index.js';
@@ -14,6 +14,7 @@ function FriendTab(props) {
   const [searchLoading, setSearchLoading] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
   const [friendList, setFriendList] = useState([]);
+  const [addAddress, setAddAddress] = useState('');
 
   useEffect(() => {
     if(!!window.localStorage.getItem("friendList") == true){
@@ -60,11 +61,12 @@ function FriendTab(props) {
     }
   };
 
-  const onSearch = async(value) => {
+  const onSearch = async() => {
+    let value = addAddress;
     if (value != '' && value != null && value != undefined) {
-      let sameList = friendList?.filter((item) => item.identity == value.split(':')[1]);
+      let sameList = friendList?.filter((item) => item.identity == value?.split(':')[1]);
       if (sameList?.length > 0) {
-        message.error("地址已添加！");
+        message.error("好友地址已已存在！");
       } else {
         try {
           setSearchLoading(true);
@@ -76,9 +78,11 @@ function FriendTab(props) {
           message.success("好友添加成功");
         } catch(err) {
           setSearchLoading(false);
-          message.success("地址格式有误");
+          message.error("好友地址格式有误");
         }
       }
+    } else {
+      message.error("好友地址不能为空");
     }
   };
 
@@ -92,21 +96,38 @@ function FriendTab(props) {
       message.success("好友删除成功!");
     } catch(err) {
       console.log(err);
-      message.success("删除失败！");
+      message.error("好友删除失败！");
     }
   };
 
+  const addressChange = (e) => {
+		setAddAddress(e.target.value)
+	}
+
   return (
     <div className="friendList">
-      <Search
+      {/* <Search
         loading={searchLoading}
         placeholder="请输入好友地址"
         allowClear
         enterButton="添加"
         size="middle"
         onSearch={onSearch}
+      /> */}
+      <Input
+        allowClear
+        size="large"
+        placeholder="请输入想要添加的好友地址"
+        onChange={addressChange.bind(this)}
+        suffix={
+          <Spin indicator={antIcon} spinning={searchLoading}>
+            <div className="importBlock" onClick={onSearch}>
+              <ArrowRightOutlined style={{ color: 'white' }} />
+            </div>
+          </Spin>
+        }
       />
-    <Spin indicator={antIcon} spinning={loading}>
+      <Spin indicator={antIcon} spinning={loading}>
       { friendList != null && friendList.length !== 0 &&
         friendList.map((item,index) => {
           return <div className="item" key={index}>
