@@ -35,7 +35,7 @@ function TestTab(props) {
         <p style={{fontWeight:'bold', textAlign:'left'}}>Identity Principal:</p>
         <p>{dfinityKey}</p>
       </div>
-      <div class="testList" style={{textAlign:'left'}}>
+      <div className="testList" style={{textAlign:'left'}}>
         <p style={{fontWeight:'bold'}}>开发者模式:</p>
         <Button 
           type="primary" 
