@@ -152,31 +152,39 @@ let ContractsUtils = {
       let addressListContract = await ContractsUtils.createAddressListContract();
       let friendInfoSize = await addressListContract.friendSize();
       friendInfoSize = parseInt(friendInfoSize);
-      if (friendInfoSize != window.localStorage.getItem("friendSize")) {
+      //todo 删除好友，未修改friendSize，所以需要使用新字段来标识好友数的变化
+      // if (friendInfoSize == window.localStorage.getItem("friendSize")) {
         let friendList = [];
         //遍历，获取好友列表
         if (friendInfoSize > 0) {
-          for (var i = 1; i <= friendInfoSize; i++) {
-            let friendAddress = await addressListContract.indexAddressMap(i);
-            let friendInfo = await addressListContract.friendMap(friendAddress);
+          for (var i = 0; i < friendInfoSize; i++) {
+            //原来的方法弃用了
+            // let friendAddress = await addressListContract.indexAddressMap(i);
+            // let friendInfo = await addressListContract.friendMap(friendAddress);
+
+            //使用getFriendInfo方法获取好友信息
+            let friendInfo = await addressListContract.getFriendInfo(i);
             console.log(friendInfo);
-            friendList.push({
-              name: friendInfo.name,
-              identity: friendInfo.identity,
-              iconUrl: 'https://wepiggy.static.fortop.site/app/static/lowRisk.aa37608b.gif',
-            })
+            if(null != friendInfo && undefined != friendInfo && friendInfo.identity != '0x0000000000000000000000000000000000000000'){
+              friendList.push({
+                name: friendInfo.name,
+                identity: friendInfo.identity,
+                iconUrl: 'https://wepiggy.static.fortop.site/app/static/lowRisk.aa37608b.gif',
+              })
+            }
+
           }
         }
         window.localStorage.setItem("friendSize", friendList.length);
         window.localStorage.setItem("friendList", JSON.stringify(friendList));
         return friendList;
-      } else {
-        if(!!window.localStorage.getItem("friendList") == true) {
-          return JSON.parse(window.localStorage.getItem("friendList"));
-        } else {
-          return [];
-        }
-      }
+      // } else {
+      //   if(!!window.localStorage.getItem("friendList") == true) {
+      //     return JSON.parse(window.localStorage.getItem("friendList"));
+      //   } else {
+      //     return [];
+      //   }
+      // }
     } catch(err) {
       console.log(err);
     }

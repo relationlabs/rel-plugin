@@ -1,4 +1,4 @@
-let addressListContract = [
+let addressListContract =[
 	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
@@ -207,6 +207,42 @@ let addressListContract = [
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "index",
+				"type": "uint256"
+			}
+		],
+		"name": "getFriendInfo",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "identity",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "source",
+						"type": "address"
+					}
+				],
+				"internalType": "struct AddressList.Friend",
+				"name": "friendInfo",
+				"type": "tuple"
 			}
 		],
 		"stateMutability": "view",

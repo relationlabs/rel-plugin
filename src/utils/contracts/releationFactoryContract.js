@@ -3,6 +3,25 @@ let releationFactoryContract = [
 		"inputs": [
 			{
 				"internalType": "address",
+				"name": "creator",
+				"type": "address"
+			}
+		],
+		"name": "createAddressListContract",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "addressListContract",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
 				"name": "_openInfoAddress",
 				"type": "address"
 			}
@@ -59,25 +78,6 @@ let releationFactoryContract = [
 			}
 		],
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "creator",
-				"type": "address"
-			}
-		],
-		"name": "createAddressListContract",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "addressListContract",
-				"type": "address"
-			}
-		],
-		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{

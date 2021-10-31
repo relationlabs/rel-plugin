@@ -14,6 +14,6 @@ export let ContractAddress = '0x2A9777315FeB572317eCb3e2199068150e605c78';
 export let OpenInfoContractAddress = "0xD45608AB79d8C1c4cdbD590772fEAD9e1fb6feF8";
 
 //关系工厂 合约
-export let RelationFactoryContractAddress = "0x51886255CF3a3a007C66dcD1588A1c8CB5abf583";
+export let RelationFactoryContractAddress = "0x1f6b15745C8457928752cf72013B967A3A543654";
 
 export const nftArr = [nft0, nft1, nft2, nft3, nft4];
