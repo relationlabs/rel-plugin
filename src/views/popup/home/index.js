@@ -7,14 +7,11 @@ import MessageTab from './children/messageTab/index'
 import TestTab from './children/testTab/index'
 import LogoGather from './motion/LogoGather/index';
 import { GithubOutlined, TwitterOutlined, FacebookOutlined, LoginOutlined} from '@ant-design/icons';
-import ContractsUtils from '../../../utils/contractsUtils.js';
-import DfinityLogo from './dfinity.png';
-import MotokoSvg from './motoko.svg';
+import ContractsUtils from '../../../common/utils/contractsUtils.js';
+import DfinityLogo from '../../../assets/images/dfinity.png';
+import MotokoSvg from '../../../assets/images/motoko.svg';
 import { Ed25519KeyIdentity } from "@dfinity/identity";
-import { nftArr } from '../../../constants/index.js';
-
-import { Identity } from '@dfinity/agent';
-import { AuthClient } from '@dfinity/auth-client';
+import { nftArr } from '../../../common/constant/index.js';
 
 const { TabPane } = Tabs;
 

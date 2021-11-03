@@ -37,7 +37,7 @@
                 "./src/globalComponents/*"
             ],
             "@/api": [
-                "./src/api/index"
+                "src/common/api/index"
             ],
             "@/mock": [
                 "./src/mock.js"

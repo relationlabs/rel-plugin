@@ -1,8 +1,8 @@
 import React from 'react'
 import './popup.styl'
-import Login from './pages/login'
-import Home from './pages/home'
-import EthAccount from './pages/home/children/ethAccount/index'
+import Login from './login'
+import Home from './home'
+import EthAccount from './home/children/ethAccount/index'
 import { HashRouter, Route, Switch, Redirect } from 'react-router-dom'
 
 function Popup() {

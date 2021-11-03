@@ -3,8 +3,8 @@ import { Button, Spin } from 'antd';
 import { BigNumber } from "ethers";
 import { LoadingOutlined } from '@ant-design/icons';
 import { Ed25519KeyIdentity } from "@dfinity/identity";
-import ContractsUtils from '../../../../../utils/contractsUtils.js';
-import { relationship } from '../../../../../utils/declarations/relationship/index';
+import ContractsUtils from '../../../../../common/utils/contractsUtils.js';
+import { relationship } from '../../../../../common/utils/declarations/relationship/index';
 
 function TestTab(props) {
   const dfinityKey = window.localStorage.getItem("dfinityKey");

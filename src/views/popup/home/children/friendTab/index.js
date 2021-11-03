@@ -2,9 +2,9 @@ import React, {useState, useEffect} from 'react'
 import './friendTab.styl'
 import { Spin, Popconfirm, message, Input } from 'antd';
 import { CopyOutlined, MessageOutlined, LoadingOutlined, DeleteOutlined, ArrowRightOutlined } from '@ant-design/icons';
-import EmptyStatus from '../../../../../content/components/emptyStatus';
-import ContractsUtils from '../../../../../utils/contractsUtils.js';
-import { nftArr } from '../../../../../constants/index.js';
+import EmptyStatus from '../../../../../views/content/components/emptyStatus';
+import ContractsUtils from '../../../../../common/utils/contractsUtils.js';
+import { nftArr } from '../../../../../common/constant/index.js';
 
 const { Search } = Input;
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;

@@ -1,9 +1,11 @@
 import React, {useState} from 'react'
 import { Button, Input, message } from 'antd'
-import loginWhite from './logo-white.png'
+import loginWhite from '../../../assets/images/logo-white.png'
 import './login.styl'
-import ContractsUtils from "../../../utils/contractsUtils.js"
+import ContractsUtils from "../../../common/utils/contractsUtils.js"
 import { ArrowRightOutlined } from '@ant-design/icons'
+import { Identity } from '@dfinity/agent';
+import { AuthClient } from '@dfinity/auth-client';
 
 function Login(props) {
 	const [privateKey, setPrivateKey] = useState('');
@@ -36,21 +38,21 @@ function Login(props) {
   } 
 
 
-  // const login = () => {
-  //   return new Promise(async (resolve) => {
-  //     await this.authClient?.login({
-  //       identityProvider: IDENTITY_URL,
-  //       onSuccess: async () => {
-  //         resolve(this.authClient?.getIdentity());
-  //       },
-  //     });
-  //   });
-  // }
+  const login = () => {
+    return new Promise(async (resolve) => {
+      await this.authClient?.login({
+        identityProvider: IDENTITY_URL,
+        onSuccess: async () => {
+          resolve(this.authClient?.getIdentity());
+        },
+      });
+    });
+  }
 
 	return (
 		<div className="layout-login">
 			<img src={loginWhite} alt="" className="carrot" />
-			{/* <div className="login-con">
+			<div className="login-con">
 				<div className="ipt-con">
 					<Input
 						type="password"
@@ -64,14 +66,14 @@ function Login(props) {
 						placeholder="请粘贴您的私钥导入账户"
 					/>
 				</div>
-			</div> */}
-			<div className="login-con">
+			</div>
+			{/* <div className="login-con">
 				<div className="ipt-con">
 					<Button className="loginButton" size="large">
 						登录 Dfinity
 					</Button>
 				</div>
-			</div>
+			</div> */}
 		</div>
 	);
 }

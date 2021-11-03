@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './mainModal.styl'
 import Modal from 'antd/es/modal'
 import 'antd/es/modal/style/index.css'
-import FriendTab from '../../../popup/pages/home/children/friendTab/index'
+import FriendTab from '../../../popup/home/children/friendTab/index'
 import { apiReqs } from '@/api'
 
 function MainModal(props) {

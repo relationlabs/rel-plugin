@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import './eth.styl'
 import { Button } from 'antd'
-import ethIcon from '../../../../../content/images/ethereum_icon.png'
+import ethIcon from '../../../../../assets/images/ethereum_icon.png'
 import { LeftOutlined, PlusCircleOutlined } from '@ant-design/icons';
 
 function EthAccount(props) {

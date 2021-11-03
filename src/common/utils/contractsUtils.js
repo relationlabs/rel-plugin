@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
-import { RelationFactoryContractAddress } from '../constants/index.js';
-import relationFactoryContractABI from '../utils/contracts/releationFactoryContract.js';
-import addressListContractABI from '../utils/contracts/addressListContract.js';
+import { RelationFactoryContractAddress } from '../constant/index.js';
+import relationFactoryContractABI from './contracts/releationFactoryContract.js';
+import addressListContractABI from './contracts/addressListContract.js';
 
 let ContractsUtils = {
 

@@ -13,8 +13,8 @@ const rootJoin = (inRootPath) => path.join(root, inRootPath);
 module.exports = {
     entry: {
         main: rootJoin('./src/index.js'),
-        content: rootJoin('./src/content/index.js'),
-        // background: rootJoin('./src/background/index.js'),
+        // content: rootJoin('./src/views/content/index.js'),
+        // background: rootJoin('./src/views/background/index.js'),
     },
     output: {
         path: rootJoin('./dist'),
@@ -32,7 +32,7 @@ module.exports = {
             "@commonModules": rootJoin('./src/commonModules'),
             "@globalComponents": rootJoin('./src/globalComponents'),
             "@mock": rootJoin('./mock'),
-            "@/api": rootJoin('./src/api/index.js'),
+            "@/api": rootJoin('./src/common/api/index.js'),
             "@/mock": rootJoin('./src/mock.js'),
         }
     },

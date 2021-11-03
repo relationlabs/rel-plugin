@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import './messageTab.styl'
 import { ArrowRightOutlined } from '@ant-design/icons';
-import EmptyStatus from '../../../../../content/components/emptyStatus';
+import EmptyStatus from '../../../../../views/content/components/emptyStatus';
 
 function MessageTab(props) {
   const [messageList, setMessageList] = useState([]);
