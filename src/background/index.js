@@ -1,4 +1,4 @@
-import { apiRequest } from '@/api'
+// import { apiRequest } from '@/api'
 
 /*global chrome*/
 // chrome.runtime.onInstalled.addListener(function () {

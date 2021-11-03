@@ -80,7 +80,7 @@ class CmdParse {
         const { mock = false } = this.options;
 
         // 如果mock为true，则启动mock服务
-        if (mock && mode !== 'prod') this.RunMockServer();
+        // if (mock && mode !== 'prod') this.RunMockServer();
 
         process.env.MOCK = mock ? '1' : '0';
         process.env.NODE_ENV = mode;

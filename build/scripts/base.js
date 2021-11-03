@@ -14,7 +14,7 @@ module.exports = {
     entry: {
         main: rootJoin('./src/index.js'),
         content: rootJoin('./src/content/index.js'),
-        background: rootJoin('./src/background/index.js'),
+        // background: rootJoin('./src/background/index.js'),
     },
     output: {
         path: rootJoin('./dist'),

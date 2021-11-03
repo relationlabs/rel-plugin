@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { Input, message } from 'antd'
+import { Button, Input, message } from 'antd'
 import loginWhite from './logo-white.png'
 import './login.styl'
 import ContractsUtils from "../../../utils/contractsUtils.js"
@@ -36,10 +36,21 @@ function Login(props) {
   } 
 
 
+  // const login = () => {
+  //   return new Promise(async (resolve) => {
+  //     await this.authClient?.login({
+  //       identityProvider: IDENTITY_URL,
+  //       onSuccess: async () => {
+  //         resolve(this.authClient?.getIdentity());
+  //       },
+  //     });
+  //   });
+  // }
+
 	return (
 		<div className="layout-login">
 			<img src={loginWhite} alt="" className="carrot" />
-			<div className="login-con">
+			{/* <div className="login-con">
 				<div className="ipt-con">
 					<Input
 						type="password"
@@ -52,6 +63,13 @@ function Login(props) {
 						onChange={keyChange.bind(this)}
 						placeholder="请粘贴您的私钥导入账户"
 					/>
+				</div>
+			</div> */}
+			<div className="login-con">
+				<div className="ipt-con">
+					<Button className="loginButton" size="large">
+						登录 Dfinity
+					</Button>
 				</div>
 			</div>
 		</div>

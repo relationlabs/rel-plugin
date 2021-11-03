@@ -10,9 +10,11 @@ import { GithubOutlined, TwitterOutlined, FacebookOutlined, LoginOutlined} from 
 import ContractsUtils from '../../../utils/contractsUtils.js';
 import DfinityLogo from './dfinity.png';
 import MotokoSvg from './motoko.svg';
-// import LogoWhite from '../../../assets/images/logo-white.png'
 import { Ed25519KeyIdentity } from "@dfinity/identity";
 import { nftArr } from '../../../constants/index.js';
+
+import { Identity } from '@dfinity/agent';
+import { AuthClient } from '@dfinity/auth-client';
 
 const { TabPane } = Tabs;
 
