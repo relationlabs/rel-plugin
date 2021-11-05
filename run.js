@@ -80,7 +80,6 @@ class CmdParse {
             this.spinner.succeed('代码打包完成');
             console.log(chalk.green('编译完成！'));
         });
-        const compiler = webpack(this.optionWebpack);
     }
 
     // 启动webpack-dev-server
