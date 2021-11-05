@@ -1,6 +1,15 @@
 /*global chrome*/
 // import { apiRequest } from '@/api'
 
+window.test = 'I am the bg window!';
+window.testf = function() {
+    alert(test);
+    const views = chrome.extension.getViews({type: 'popup'});
+    if (Array.isArray(views) && views.length > 0) {
+        console.log(views[0], views[0].location.href);
+    }
+}
+
 chrome.runtime.onInstalled.addListener(function () {
     chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
         chrome.declarativeContent.onPageChanged.addRules([{
@@ -11,6 +20,11 @@ chrome.runtime.onInstalled.addListener(function () {
             actions: [new window.chrome.declarativeContent.ShowPageAction()]
     }])
     })
+})
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    console.log('收到来自content的消息', request, sender);
+    sendResponse('ok');
 })
 
 

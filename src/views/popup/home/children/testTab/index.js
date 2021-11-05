@@ -37,6 +37,32 @@ function TestTab(props) {
       </div>
       <div className="testList" style={{textAlign:'left'}}>
         <p style={{fontWeight:'bold'}}>开发者模式:</p>
+        <Button
+          type="primary"
+          style={{display:'block', margin:'5px'}} 
+          onClick={() => {
+            const bg = chrome.extension.getBackgroundPage();
+            if (typeof bg.testf === 'function') bg.testf();
+          }}
+        >
+          测试bg与popup的相互调用
+        </Button>
+        <Button
+          type="primary"
+          style={{display:'block', margin:'5px'}} 
+          onClick={() => {
+            chrome.tabs.query({
+              active: true,
+              currentWindow: true,
+            }, (tabs) => {
+              chrome.tabs.sendMessage(tabs[0].id, { cmd: 'test', value: '这是一段来自popup的消息' }, (response) => {
+                console.log('来自content的回复:', response);
+              });
+            });
+          }}
+        >
+          测试bg和popup给content发送消息
+        </Button>
         <Button 
           type="primary" 
           style={{display:'block', margin:'5px'}} 

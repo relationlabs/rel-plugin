@@ -5,7 +5,7 @@
   "description": "ic-contact",
   "license": "wx-private",
   "scripts": {
-    "start": "node run dev --mock",
+    "start": "node run dev",
     "build": "node run build",
     "release": "node run build",
     "mock": "node mock/index.ts",

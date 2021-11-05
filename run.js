@@ -58,29 +58,9 @@ class CmdParse {
         }
     }
 
-    // 启动mock服务
-    RunMockServer() {
-        this.spinner.text = '正在启动mock服务...\n';
-        const mockPort = 7182; // mock服务的port固定为7182
-        const mockUrl = `http://localhost:${mockPort}`;
-        const spinner = new Spinner();
-        exec('node ./mock/index.ts');
-        waitOn({
-            resources: [mockUrl],
-            timeout: 30000,
-        }).then(() => {
-            spinner.succeed('mock服务已启动!\n');
-        }).catch(err => {
-            spinner.fail(`mock服务启动失败! error: ${err}\n`);
-        });
-    }
-
     // 基础环境
     Base(mode) {
         const { mock = false } = this.options;
-
-        // 如果mock为true，则启动mock服务
-        // if (mock && mode !== 'prod') this.RunMockServer();
 
         process.env.MOCK = mock ? '1' : '0';
         process.env.NODE_ENV = mode;
@@ -100,6 +80,7 @@ class CmdParse {
             this.spinner.succeed('代码打包完成');
             console.log(chalk.green('编译完成！'));
         });
+        const compiler = webpack(this.optionWebpack);
     }
 
     // 启动webpack-dev-server
