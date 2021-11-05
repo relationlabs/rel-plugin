@@ -135,6 +135,7 @@ module.exports = {
                 { from: rootJoin( './src/assets/images'), to: rootJoin('./dist') },
                 { from: rootJoin( './src/assets/manifest.json'), to: rootJoin('./dist') },
                 { from: rootJoin( './src/assets/insert.js'), to: rootJoin('./dist') },
+                { from: rootJoin( './src/assets/options.html'), to: rootJoin('./dist') },
             ]
         }),
         new webpack.DefinePlugin({

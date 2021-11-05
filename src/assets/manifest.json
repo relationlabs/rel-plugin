@@ -33,6 +33,12 @@
       "run_at": "document_end"
     }
   ],
+  "options_page": "options.html",
+  "options_ui":
+	{
+		"page": "options.html",
+		"chrome_style": true
+	},
   "permissions": [
     "tabs",
     "declarativeContent",
