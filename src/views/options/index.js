@@ -20,5 +20,5 @@ const OptionApp = () => {
 };
 
 ReactDOM.render(<ConfigProvider {...antdConfig}>
-    <App />
+    <OptionApp />
 </ConfigProvider>, document.getElementById('options-root'));
