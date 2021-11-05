@@ -30,11 +30,15 @@ function FriendTab(props) {
   }, [friendList])
 
   const getFriendList = () => {
-    setLoading(true);
-    ContractsUtils.getFriendList().then((res) => {
-      setLoading(false);
-      setFriendList(res);
-    })
+    if ( Chain == 'DFINITY') {
+      console.log("Chain: " + Chain);
+    } else { 
+      setLoading(true);
+      ContractsUtils.getFriendList().then((res) => {
+        setLoading(false);
+        setFriendList(res);
+      })
+    }
   }
 
   const formatAddress = (addressStr) => {

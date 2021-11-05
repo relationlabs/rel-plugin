@@ -11,7 +11,7 @@ import ContractsUtils from '../../../common/utils/contractsUtils.js';
 import DfinityLogo from '../../../assets/images/dfinity.png';
 import MotokoSvg from '../../../assets/images/motoko.svg';
 import { Ed25519KeyIdentity } from "@dfinity/identity";
-import { nftArr } from '../../../common/constant/index.js';
+import { Chain, nftArr } from '../../../common/constant/index.js';
 import DfinityUtils from "../../../common/utils/dfinityUtils.js"
 
 const { TabPane } = Tabs;
@@ -24,9 +24,13 @@ function Home(props) {
   const nftNum = JSON.parse(window.localStorage.getItem("nftNum")) ?? 0;
 
   useEffect(() => {
-    listenMessage();
-    handleAccountsChanged();
-    setAddress(ContractsUtils.getLocalStorageWallet()?.address);
+    if ( Chain == 'DFINITY') {
+      console.log("Chain: " + Chain);
+    } else {
+      listenMessage();
+      handleAccountsChanged();
+      setAddress(ContractsUtils.getLocalStorageWallet()?.address);
+    }
   }, [])
 
   const callback = (key) => {

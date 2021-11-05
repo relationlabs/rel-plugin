@@ -5,7 +5,7 @@ import './login.styl'
 import ContractsUtils from "../../../common/utils/contractsUtils.js"
 import { ArrowRightOutlined } from '@ant-design/icons'
 import DfinityUtils from "../../../common/utils/dfinityUtils.js"
-// import { AuthClient } from '@dfinity/auth-client';
+import { AuthClient } from '@dfinity/auth-client';
 
 function Login(props) {
 	const [privateKey, setPrivateKey] = useState('');
@@ -39,12 +39,27 @@ function Login(props) {
 
 
 	const handleLogin = async () => {
-		await DfinityUtils.loginButtonClick();
-		console.log(window.localStorage.getItem('ic-identity'));
-		console.log(window.localStorage.getItem('ic-delegation'));
-		if (!!window.localStorage.getItem('ic-identity') && !!window.localStorage.getItem('ic-delegation')){
-			props.history.push('/home')
-		}
+		const authClient = await AuthClient.create();
+    await authClient.login({
+      identityProvider:"https://identity.ic0.app/#authorize",
+      onSuccess: async () => {
+        const identity = await authClient.getIdentity();
+				
+        console.log(identity);
+        console.log(identity.getPrincipal())
+        console.log(identity.getPrincipal().toString())
+        console.log(identity.getPrincipal().isAnonymous())
+        console.log(authClient.isAuthenticated());
+
+        console.log(window.localStorage.getItem('ic-identity'));
+				console.log(window.localStorage.getItem('ic-delegation'));
+
+				props.history.push('/home')
+      },
+      onError: () => {
+        message.error('Internet identity 登陆失败！')
+      }
+    });
   };
 
 	return (

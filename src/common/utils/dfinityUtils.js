@@ -6,6 +6,7 @@ let DfinityUtils = {
   loginButtonClick: async() => {
     const authClient = await AuthClient.create();
     await authClient.login({
+      identityProvider:"https://identity.ic0.app/#authorize",
       onSuccess: async () => {
         const identity = await authClient.getIdentity();
         console.log(identity);
@@ -13,8 +14,11 @@ let DfinityUtils = {
         console.log(identity.getPrincipal().toString())
         console.log(identity.getPrincipal().isAnonymous())
         console.log(authClient.isAuthenticated());
+        return 'Login Success';
       },
-      identityProvider:"https://identity.ic0.app/#authorize",
+      onError: () => {
+        return 'Login Fail';
+      }
     });
   },
 

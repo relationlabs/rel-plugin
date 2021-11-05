@@ -4,6 +4,9 @@ import nft2 from '../../assets/images/nft3.jpg'
 import nft3 from '../../assets/images/nft4.jpg'
 import nft4 from '../../assets/images/nft5.jpg'
 
+// 当前插件支持主链
+export let Chain = 'DFINITY';
+
 // 测试账号私钥
 export let PrivateKey = '0x85f28e54c6beb676e7338eae8a0aa67a3c1f248c2bf3f229e5125dd921576834';
 
