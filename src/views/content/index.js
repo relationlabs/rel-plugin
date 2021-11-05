@@ -1,3 +1,4 @@
+/*global chrome*/
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 import MainModal from './components/mainModal'
@@ -26,15 +27,15 @@ function Content() {
     )
 }
 
-// const app = document.createElement('div')
-// app.id = 'CRX-container'
-// document.body.appendChild(app)
+const app = document.createElement('div')
+app.id = 'CRX-container'
+document.body.appendChild(app)
 
-// ReactDOM.render(<Content />, app)
+ReactDOM.render(<Content />, app)
 
-// try {
-//     let insertScript = document.createElement('script')
-//     insertScript.setAttribute('type', 'text/javascript')
-//     insertScript.src = window.chrome.extension.getURL('insert.js')
-//     document.body.appendChild(insertScript)
-// } catch (err) {}
+try {
+    let insertScript = document.createElement('script')
+    insertScript.setAttribute('type', 'text/javascript')
+    insertScript.src = window.chrome.extension.getURL('insert.js')
+    document.body.appendChild(insertScript)
+} catch (err) {}

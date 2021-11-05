@@ -1,7 +1,8 @@
 module.exports = {
     mode: 'production',
     optimization: {
-        runtimeChunk:'single',
+        runtimeChunk: false,
+        /*
         splitChunks: {
             cacheGroups: {
                 vendor: {
@@ -11,5 +12,6 @@ module.exports = {
                 }
             }
         }
+        */
     },
 };

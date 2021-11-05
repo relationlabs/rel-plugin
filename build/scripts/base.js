@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 // plugins
-const HtmlWebacpkPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const WebpackBar = require('webpackbar');
@@ -19,7 +19,7 @@ module.exports = {
     output: {
         path: rootJoin('./dist'),
         filename: '[name].js',
-        chunkFilename: '[name].[contenthash].chunk.js',
+        chunkFilename: '[name].chunk.js',
         clean: true,
     },
     target: 'web',
@@ -116,13 +116,15 @@ module.exports = {
     plugins: [
         new WebpackBar(),
         new MiniCssExtractPlugin({
-            filename: '[name].css'
+            filename: '[name].css',
+            chunkFilename: '[name].chunk.css'
         }),
         // 主页面
-        new HtmlWebacpkPlugin({
+        new HtmlWebpackPlugin({
             template: rootJoin('./src/index.tmpl.html'),
             filename: 'index.html',
             inject: 'body',
+            chunks: ['main'],
             minify: {
                 removeComments: true, //移除HTML中的注释
                 collapseWhitespace: false //删除空白符与换行符

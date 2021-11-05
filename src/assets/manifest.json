@@ -37,7 +37,8 @@
     "tabs",
     "declarativeContent",
     "storage",
-    "notifications"
+    "notifications",
+    "https://*/*"
   ],
   "web_accessible_resources": ["insert.js"]
 }
