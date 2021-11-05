@@ -12,8 +12,9 @@ const rootJoin = (inRootPath) => path.join(root, inRootPath);
 
 module.exports = {
     entry: {
-        main: rootJoin('./src/index.js'),
+        popup: rootJoin('./src/index.js'),
         content: rootJoin('./src/views/content/index.js'),
+        options: rootJoin('./src/views/options/index.js'),
         background: rootJoin('./src/views/background/index.js'),
     },
     output: {
@@ -119,12 +120,23 @@ module.exports = {
             filename: '[name].css',
             chunkFilename: '[name].chunk.css'
         }),
-        // 主页面
+        // popup页面
         new HtmlWebpackPlugin({
-            template: rootJoin('./src/index.tmpl.html'),
-            filename: 'index.html',
+            template: rootJoin('./src/popup.html'),
+            filename: 'popup.html',
             inject: 'body',
-            chunks: ['main'],
+            chunks: ['popup'],
+            minify: {
+                removeComments: true, //移除HTML中的注释
+                collapseWhitespace: false //删除空白符与换行符
+            }
+        }),
+        // options页面
+        new HtmlWebpackPlugin({
+            template: rootJoin('./src/options.html'),
+            filename: 'options.html',
+            inject: 'body',
+            chunks: ['options'],
             minify: {
                 removeComments: true, //移除HTML中的注释
                 collapseWhitespace: false //删除空白符与换行符
@@ -135,7 +147,6 @@ module.exports = {
                 { from: rootJoin( './src/assets/images'), to: rootJoin('./dist') },
                 { from: rootJoin( './src/assets/manifest.json'), to: rootJoin('./dist') },
                 { from: rootJoin( './src/assets/insert.js'), to: rootJoin('./dist') },
-                { from: rootJoin( './src/assets/options.html'), to: rootJoin('./dist') },
             ]
         }),
         new webpack.DefinePlugin({

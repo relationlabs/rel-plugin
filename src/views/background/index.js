@@ -3,7 +3,7 @@
 
 window.test = 'I am the bg window!';
 window.testf = function() {
-    alert(test);
+    alert(window.test);
     const views = chrome.extension.getViews({type: 'popup'});
     if (Array.isArray(views) && views.length > 0) {
         console.log(views[0], views[0].location.href);
@@ -22,10 +22,12 @@ chrome.runtime.onInstalled.addListener(function () {
     })
 })
 
+/*
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.log('收到来自content的消息', request, sender);
     sendResponse('ok');
 })
+*/
 
 
 // chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
