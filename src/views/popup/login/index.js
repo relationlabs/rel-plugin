@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import { Button, Input, message } from 'antd'
 import loginWhite from '../../../assets/images/logo-white.png'
 import './login.styl'
+import extension from 'extensionizer';
 import ContractsUtils from "../../../common/utils/contractsUtils.js"
 import { ArrowRightOutlined } from '@ant-design/icons'
 import DfinityUtils from "../../../common/utils/dfinityUtils.js"
@@ -39,27 +40,31 @@ function Login(props) {
 
 
 	const handleLogin = async () => {
-		const authClient = await AuthClient.create();
-    await authClient.login({
-      identityProvider:"https://identity.ic0.app/#authorize",
-      onSuccess: async () => {
-        const identity = await authClient.getIdentity();
+
+		// 前往options.html'
+		extension.tabs.create({ url: 'options.html' });
+
+		// const authClient = await AuthClient.create();
+    // await authClient.login({
+    //   identityProvider:"https://identity.ic0.app/#authorize",
+    //   onSuccess: async () => {
+    //     const identity = await authClient.getIdentity();
 				
-        console.log(identity);
-        console.log(identity.getPrincipal())
-        console.log(identity.getPrincipal().toString())
-        console.log(identity.getPrincipal().isAnonymous())
-        console.log(authClient.isAuthenticated());
+    //     console.log(identity);
+    //     console.log(identity.getPrincipal())
+    //     console.log(identity.getPrincipal().toString())
+    //     console.log(identity.getPrincipal().isAnonymous())
+    //     console.log(authClient.isAuthenticated());
 
-        console.log(window.localStorage.getItem('ic-identity'));
-				console.log(window.localStorage.getItem('ic-delegation'));
+    //     console.log(window.localStorage.getItem('ic-identity'));
+		// 		console.log(window.localStorage.getItem('ic-delegation'));
 
-				props.history.push('/home')
-      },
-      onError: () => {
-        message.error('Internet identity 登陆失败！')
-      }
-    });
+		// 		props.history.push('/home')
+    //   },
+    //   onError: () => {
+    //     message.error('Internet identity 登陆失败！')
+    //   }
+    // });
   };
 
 	return (

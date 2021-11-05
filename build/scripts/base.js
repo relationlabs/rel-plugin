@@ -123,7 +123,7 @@ module.exports = {
         // popup页面
         new HtmlWebpackPlugin({
             template: rootJoin('./src/popup.html'),
-            filename: 'popup.html',
+            filename: 'index.html',
             inject: 'body',
             chunks: ['popup'],
             minify: {
