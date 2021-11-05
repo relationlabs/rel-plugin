@@ -3,19 +3,19 @@
   "version": "1.0",
   "description": "IC Contact 通讯录产品",
   "icons": {
-    "16": "logo-black.png",
-    "48": "logo-black.png",
-    "128": "logo-black.png"
+    "16": "images/logo-black.png",
+    "48": "images/logo-black.png",
+    "128": "images/logo-black.png"
   },
   "manifest_version": 2,
   "browser_action": {
-    "default_icon": "logo-black.png",
+    "default_icon": "images/logo-black.png",
     "default_title": "IC Contact",
-    "default_popup": "index.html"
+    "default_popup": "popup/index.html"
   },
   "background": {
     "scripts": [
-      "background.js"
+      "background/index.js"
     ],
     "persistent": false
   },
@@ -25,17 +25,17 @@
         "<all_urls>"
       ],
       "css": [
-        "content.css"
+        "content/index.css"
       ],
       "js": [
-        "content.js"
+        "content/index.js"
       ],
       "run_at": "document_end"
     }
   ],
-  "options_page": "options.html",
+  "options_page": "options/index.html",
   "options_ui": {
-    "page": "options.html",
+    "page": "options/index.html",
     "open_in_tab": true,
     "__chrome__chrome_style": false
   },

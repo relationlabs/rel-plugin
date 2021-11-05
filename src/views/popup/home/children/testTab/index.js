@@ -42,7 +42,6 @@ function TestTab(props) {
           style={{display:'block', margin:'5px'}} 
           onClick={() => {
             const bg = chrome.extension.getBackgroundPage();
-            console.log(111,bg);
             if (typeof bg.testf === 'function') bg.testf();
           }}
         >

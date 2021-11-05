@@ -3,8 +3,8 @@ import './mainModal.styl'
 import Modal from 'antd/es/modal'
 import Button from 'antd/es/button'
 import 'antd/es/modal/style/index.css'
-import FriendTab from '../../../popup/home/children/friendTab/index'
-import { apiReqs } from '@/api'
+// import FriendTab from '../../../popup/home/children/friendTab/index'
+// import { apiReqs } from '@/api'
 
 function MainModal(props) {
     // 接收父组件控制本组件关闭的方法
@@ -36,7 +36,7 @@ function MainModal(props) {
             >
                 测试给popup或者bg发送消息
             </Button>
-            <FriendTab/>
+            {/* <FriendTab/> */}
         </Modal>
     )
 }

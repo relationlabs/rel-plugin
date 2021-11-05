@@ -22,12 +22,10 @@ chrome.runtime.onInstalled.addListener(function () {
     })
 })
 
-/*
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.log('收到来自content的消息', request, sender);
     sendResponse('ok');
 })
-*/
 
 
 // chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {

@@ -10,6 +10,8 @@ const WebpackBar = require('webpackbar');
 const root = process.cwd();
 const rootJoin = (inRootPath) => path.join(root, inRootPath);
 
+const isDev = process.env.NODE_ENV === 'dev';
+
 module.exports = {
     entry: {
         popup: rootJoin('./src/index.js'),
@@ -19,8 +21,8 @@ module.exports = {
     },
     output: {
         path: rootJoin('./dist'),
-        filename: '[name].js',
-        chunkFilename: '[name].chunk.js',
+        filename: '[name]/index.js',
+        chunkFilename: '[name]/chunk.js',
         clean: true,
     },
     target: 'web',
@@ -102,6 +104,9 @@ module.exports = {
             {
                 test: /\.(a?png|jpe?g|gif|svg)$/,
                 type: 'asset',
+                generator: {
+                    filename: 'images/[hash][ext]',
+                },
                 parser: {
                     dataUrlCondition: {
                         maxSize: 10 * 1024 // 10kb以下 asset/inline 10kb以上 asset/resource
@@ -117,13 +122,13 @@ module.exports = {
     plugins: [
         new WebpackBar(),
         new MiniCssExtractPlugin({
-            filename: '[name].css',
-            chunkFilename: '[name].chunk.css'
+            filename: '[name]/index.css',
+            chunkFilename: '[name]/chunk.css'
         }),
         // popup页面
         new HtmlWebpackPlugin({
             template: rootJoin('./src/popup.html'),
-            filename: 'index.html',
+            filename: isDev ? 'index.html' : 'popup/index.html',
             inject: 'body',
             chunks: ['popup'],
             minify: {
@@ -134,7 +139,7 @@ module.exports = {
         // options页面
         new HtmlWebpackPlugin({
             template: rootJoin('./src/options.html'),
-            filename: 'options.html',
+            filename: 'options/index.html',
             inject: 'body',
             chunks: ['options'],
             minify: {
@@ -144,7 +149,7 @@ module.exports = {
         }),
         new CopyPlugin({
             patterns: [
-                { from: rootJoin( './src/assets/images'), to: rootJoin('./dist') },
+                { from: rootJoin( './src/assets/images'), to: rootJoin('./dist/images') },
                 { from: rootJoin( './src/assets/manifest.json'), to: rootJoin('./dist') },
                 { from: rootJoin( './src/assets/insert.js'), to: rootJoin('./dist') },
             ]
