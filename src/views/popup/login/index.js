@@ -4,7 +4,8 @@ import loginWhite from '../../../assets/images/logo-white.png'
 import './login.styl'
 import ContractsUtils from "../../../common/utils/contractsUtils.js"
 import { ArrowRightOutlined } from '@ant-design/icons'
-import { AuthClient } from '@dfinity/auth-client';
+import DfinityUtils from "../../../common/utils/dfinityUtils.js"
+// import { AuthClient } from '@dfinity/auth-client';
 
 function Login(props) {
 	const [privateKey, setPrivateKey] = useState('');
@@ -38,20 +39,12 @@ function Login(props) {
 
 
 	const handleLogin = async () => {
-		const IDENTITY_URL = 'https://identity.ic0.app';
-		const authClient = await AuthClient.create();
-
-		console.log(authClient.isAuthenticated());
-
-		await authClient.login();
-    const identity = authClient.getIdentity();
-
-		console.log(authClient.isAuthenticated());
-
-    console.log(identity);
-		console.log(identity.getPrincipal())
-		console.log(identity.getPrincipal().toString())
-    console.log(identity.getPrincipal().isAnonymous())
+		await DfinityUtils.loginButtonClick();
+		console.log(window.localStorage.getItem('ic-identity'));
+		console.log(window.localStorage.getItem('ic-delegation'));
+		if (!!window.localStorage.getItem('ic-identity') && !!window.localStorage.getItem('ic-delegation')){
+			props.history.push('/home')
+		}
   };
 
 	return (

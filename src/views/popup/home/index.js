@@ -12,6 +12,7 @@ import DfinityLogo from '../../../assets/images/dfinity.png';
 import MotokoSvg from '../../../assets/images/motoko.svg';
 import { Ed25519KeyIdentity } from "@dfinity/identity";
 import { nftArr } from '../../../common/constant/index.js';
+import DfinityUtils from "../../../common/utils/dfinityUtils.js"
 
 const { TabPane } = Tabs;
 
@@ -32,14 +33,17 @@ function Home(props) {
     setTapKey(key);
   }
 
-  const toLogin = () => {
-		props.history.push('/login');
+  const toLogin = async() => {
+		// props.history.push('/login');
     window.localStorage.setItem("wallet", '');
     window.localStorage.setItem("friendSize", 0);
     window.localStorage.setItem("friendList", []);
     window.localStorage.setItem("messageList", []);
     window.localStorage.setItem("dfinityKey", '');
     window.localStorage.setItem("nftNum", 0);
+
+    await DfinityUtils.logoutButtonClick();
+    props.history.push('/login');
 	}
 
   const toEthAccount = () => {
