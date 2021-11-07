@@ -10,11 +10,13 @@ const antdConfig ={
 };
 
 const optionsStyle = {
+    margin:'0px',
     height: '100vh', 
-    width: '100vh', 
+    width: '100%', 
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    textAlign: 'center',
     background: 'linear-gradient(to right bottom, #29acde, #f67d2e, #902282)',
 }
 
@@ -46,9 +48,9 @@ const OptionApp = () => {
                 <h1>Internet Identity Client</h1>
                 <h2>You are not authenticated</h2>
                 <p>To log in, click this button!</p>
-                <button type="button" id="loginButton" onClick={handleLogin}>
-                    Log in
-                </button>
+                <Button className="loginButton" style={{borderRadius: '20px'}} size="large" onClick={handleLogin}>
+                    Login DFINITY
+                </Button>
             </div>
         </div>
     )
