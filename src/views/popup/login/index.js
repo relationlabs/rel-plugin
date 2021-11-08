@@ -40,7 +40,14 @@ function Login(props) {
 
 	// 前往options.html'
 	const handleDfinityLogin = async () => {
-		extension.tabs.create({ url: 'options/index.html' });
+		console.log(!!window.localStorage.getItem("ic-identity"));
+		console.log(!!window.localStorage.getItem("ic-delegation"));
+
+		if (window.localStorage.getItem("ic-identity") != null  && window.localStorage.getItem("ic-delegation") != null) {
+			props.history.push('/home')
+		} else {
+			extension.tabs.create({ url: 'options/index.html' });
+		}
 	}
 
 	return (

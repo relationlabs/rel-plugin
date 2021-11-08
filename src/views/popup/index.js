@@ -21,7 +21,7 @@ function Popup() {
                         : <Redirect to="/login"/>
                 }
                 {
-                    Chain == 'DFINITY' && window.localStorage.getItem('ic-delegation')  
+                    Chain == 'DFINITY' && window.localStorage.getItem('ic-delegation') != null
                         ? <Redirect to="/home"/>
                         : <Redirect to="/login"/>
                 }
