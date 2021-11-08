@@ -7,6 +7,7 @@ import ContractsUtils from '../../../../../common/utils/contractsUtils.js';
 import { nftArr } from '../../../../../common/constant/index.js';
 
 const { Search } = Input;
+const Chain = window.localStorage.getItem("Chain");
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 function FriendTab(props) {
@@ -32,7 +33,8 @@ function FriendTab(props) {
   const getFriendList = () => {
     if ( Chain == 'DFINITY') {
       console.log("Chain: " + Chain);
-    } else { 
+    } 
+    if ( Chain == 'Ethereum') {
       setLoading(true);
       ContractsUtils.getFriendList().then((res) => {
         setLoading(false);

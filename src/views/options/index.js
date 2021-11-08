@@ -39,6 +39,8 @@ function OptionApp() {
             identityProvider:"https://identity.ic0.app/#authorize",
             onSuccess: async () => {
                 const identity = await authClient.getIdentity();
+                window.localStorage.setItem("Chain", 'DFINITY');
+                window.localStorage.setItem("principal", identity.getPrincipal().toString());
                 setIsLogin(true);
 
                 console.log(identity);

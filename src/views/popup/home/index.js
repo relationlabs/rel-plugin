@@ -11,7 +11,7 @@ import ContractsUtils from '../../../common/utils/contractsUtils.js';
 import DfinityLogo from '../../../assets/images/dfinity.png';
 import MotokoSvg from '../../../assets/images/motoko.svg';
 import { Ed25519KeyIdentity } from "@dfinity/identity";
-import { Chain, nftArr } from '../../../common/constant/index.js';
+import { nftArr } from '../../../common/constant/index.js';
 import DfinityUtils from "../../../common/utils/dfinityUtils.js"
 
 const { TabPane } = Tabs;
@@ -22,11 +22,11 @@ function Home(props) {
   const [address, setAddress] = useState('');
   const [dfinityKey, setDfinityKey] = useState('');
   const nftNum = JSON.parse(window.localStorage.getItem("nftNum")) ?? 0;
+  const Chain = window.localStorage.getItem("Chain");
 
   useEffect(() => {
-    if ( Chain == 'DFINITY') {
-      console.log("Chain: " + Chain);
-    } else {
+    console.log("Chain: ==> " + Chain);
+    if ( Chain == 'Ethereum') {
       listenMessage();
       handleAccountsChanged();
       setAddress(ContractsUtils.getLocalStorageWallet()?.address);
@@ -38,15 +38,17 @@ function Home(props) {
   }
 
   const toLogin = async() => {
-		// props.history.push('/login');
     window.localStorage.setItem("wallet", '');
     window.localStorage.setItem("friendSize", 0);
     window.localStorage.setItem("friendList", []);
     window.localStorage.setItem("messageList", []);
     window.localStorage.setItem("dfinityKey", '');
     window.localStorage.setItem("nftNum", 0);
-
-    await DfinityUtils.logoutButtonClick();
+    window.localStorage.setItem("Chain", '');
+    window.localStorage.setItem("principal", '');
+    if ( Chain == 'DFINITY') {
+      await DfinityUtils.logoutButtonClick();
+    }
     props.history.push('/login');
 	}
 
@@ -55,6 +57,10 @@ function Home(props) {
 	}
 
   const formatAddress = (addressStr) => {
+    if ( Chain == 'DFINITY' && window.localStorage.getItem("principal") != null) {
+      let principal =  window.localStorage.getItem("principal");
+      return principal.substring(0, 3)+"..."+principal.substr(principal.length-3);
+    }
     return addressStr.substring(0, 3)+"..."+addressStr.substr(addressStr.length-3);
   }
 

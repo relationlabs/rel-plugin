@@ -4,7 +4,6 @@ import Login from './login'
 import Home from './home'
 import EthAccount from './home/children/ethAccount/index'
 import { HashRouter, Route, Switch, Redirect } from 'react-router-dom'
-import { Chain } from '../../common/constant/index'
 
 function Popup() {
     return (

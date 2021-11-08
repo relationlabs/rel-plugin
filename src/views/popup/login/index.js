@@ -5,7 +5,6 @@ import './login.styl'
 import extension from 'extensionizer';
 import ContractsUtils from "../../../common/utils/contractsUtils.js"
 import { ArrowRightOutlined } from '@ant-design/icons'
-import {Chain} from "../../../common/constant/index"
 
 
 function Login(props) {
@@ -17,7 +16,8 @@ function Login(props) {
 			window.localStorage.setItem("nftNum", JSON.stringify(randomNum(0,4)));
 			let wallet = ContractsUtils.getLocalStorageWallet();
 			if(wallet != null){
-				props.history.push('/home')
+				props.history.push('/home');
+				window.localStorage.setItem("Chain", 'Ethereum');
 			} else {
 				message.error('私钥格式有误')
 			}
@@ -44,7 +44,8 @@ function Login(props) {
 		console.log(!!window.localStorage.getItem("ic-delegation"));
 
 		if (window.localStorage.getItem("ic-identity") != null  && window.localStorage.getItem("ic-delegation") != null) {
-			props.history.push('/home')
+			props.history.push('/home');
+			window.localStorage.setItem("Chain", 'DFINITY');
 		} else {
 			extension.tabs.create({ url: 'options/index.html' });
 		}
@@ -53,32 +54,28 @@ function Login(props) {
 	return (
 		<div className="layout-login">
 			<img src={loginWhite} alt="" className="carrot" />
-			{ Chain == 'ETH' && 
-					<div className="login-con">
-						<div className="ipt-con">
-							<Input
-								type="password"
-								size="large"
-								suffix={
-									<div className="importBlock" onClick={importAccount}>
-										<ArrowRightOutlined style={{ color: 'white' }} />
-									</div>
-								}
-								onChange={keyChange.bind(this)}
-								placeholder="请粘贴您的ETH私钥导入账户"
-							/>
-						</div>
+				<div className="login-con1">
+					<div className="ipt-con">
+						<Input
+							type="password"
+							size="large"
+							suffix={
+								<div className="importBlock" onClick={importAccount}>
+									<ArrowRightOutlined style={{ color: 'white' }} />
+								</div>
+							}
+							onChange={keyChange.bind(this)}
+							placeholder="请粘贴您的ETH私钥导入账户"
+						/>
 					</div>
-			}
-			{ Chain == 'DFINITY' && 
-					<div className="login-con">
-						<div className="ipt-con">
-							<Button className="loginButton" size="large" onClick={handleDfinityLogin}>
-								Login DFINITY
-							</Button>
-						</div>
+				</div>
+				<div className="login-con2">
+					<div className="ipt-con">
+						<Button className="loginButton" size="large" onClick={handleDfinityLogin}>
+							Login DFINITY
+						</Button>
 					</div>
-			}
+				</div>
 		</div>
 	);
 }
