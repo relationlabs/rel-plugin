@@ -7,8 +7,6 @@ import { HashRouter, Route, Switch, Redirect } from 'react-router-dom'
 import { Chain } from '../../common/constant/index'
 
 function Popup() {
-    console.log('ic-delegation:' + window.localStorage.getItem('ic-delegation'));
-    console.log('Chain:' + Chain);
     return (
         <HashRouter>
             <Switch>
@@ -16,12 +14,7 @@ function Popup() {
                 <Route path="/home" path="/home" component={Home} />
                 <Route path="/ethAccount" path="/ethAccount" component={EthAccount} />
                 {
-                    Chain == 'ETH' && window.localStorage.getItem('wallet')  
-                        ? <Redirect to="/home"/>
-                        : <Redirect to="/login"/>
-                }
-                {
-                    Chain == 'DFINITY' && window.localStorage.getItem('ic-delegation') != null
+                    (window.localStorage.getItem('wallet') || window.localStorage.getItem('ic-delegation') != null)
                         ? <Redirect to="/home"/>
                         : <Redirect to="/login"/>
                 }
