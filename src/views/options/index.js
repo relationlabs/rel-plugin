@@ -40,16 +40,29 @@ function OptionApp() {
             onSuccess: async () => {
                 const identity = await authClient.getIdentity();
                 window.localStorage.setItem("Chain", 'DFINITY');
-                window.localStorage.setItem("principal", identity.getPrincipal().toString());
+                window.localStorage.setItem("principal", identity.getPrincipal().toText());
                 setIsLogin(true);
 
                 console.log(identity);
                 console.log(identity.getPrincipal())
                 console.log(identity.getPrincipal().toString())
+                console.log(identity.getPrincipal().toText())
                 console.log(identity.getPrincipal().isAnonymous())
                 console.log(authClient.isAuthenticated());
                 console.log(window.localStorage.getItem('ic-identity'));
                 console.log(window.localStorage.getItem('ic-delegation'));
+
+                // console.log(identity.getKeyPair());
+                // console.log(identity.getKeyPair().secretKey);
+                // console.log(identity.Ed25519KeyIdentity.generate().toJSON());
+
+                // const whoami_actor = createActor(canisterId, {
+                //     agentOptions: {
+                //         identity,
+                //     },
+                // });
+                // const response = await whoami_actor.whoami();
+                // console.log(response);
             },
             onError: () => {
                 setIsLogin(false);
