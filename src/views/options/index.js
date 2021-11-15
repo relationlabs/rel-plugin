@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import { ConfigProvider, Button } from 'antd'
 import zhCN from 'antd/es/locale/zh_CN'
 import { AuthClient } from '@dfinity/auth-client';
+// import { createActor } from '../../common/utils/declarations/relationship/index'
 
 const antdConfig ={
     locale: zhCN
@@ -62,6 +63,7 @@ function OptionApp() {
                 //     },
                 // });
                 // const response = await whoami_actor.whoami();
+                // console.log("=============> whoami_actor <=========");
                 // console.log(response);
             },
             onError: () => {

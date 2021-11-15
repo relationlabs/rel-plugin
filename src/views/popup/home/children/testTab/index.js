@@ -1,10 +1,11 @@
 import React, {useEffect} from 'react'
-import { Button, Spin } from 'antd';
+import { Button, Spin, message } from 'antd';
 import { BigNumber } from "ethers";
 import { LoadingOutlined } from '@ant-design/icons';
 import { Ed25519KeyIdentity } from "@dfinity/identity";
 import ContractsUtils from '../../../../../common/utils/contractsUtils.js';
 import { relationship } from '../../../../../common/utils/declarations/relationship/index';
+import FleekUtils from '../../../../../common/utils/fleekUtils'
 
 function TestTab(props) {
   const dfinityKey = window.localStorage.getItem("dfinityKey");
@@ -25,6 +26,11 @@ function TestTab(props) {
     return principal;
   }
 
+  const handleFleek = async() => {
+    await FleekUtils.saveDataToIpfs('zhengbinbin1');
+    message.success('数据已上传fleek');
+  }
+
   return (
     <div style={{width:'100%', height: '230px', overflow: 'hidden', overflowY:'scroll'}}>
      <div style={{textAlign:'left'}}>
@@ -37,6 +43,14 @@ function TestTab(props) {
       </div>
       <div className="testList" style={{textAlign:'left'}}>
         <p style={{fontWeight:'bold'}}>开发者模式:</p>
+
+        <Button 
+          type="primary"
+          style={{display:'block', margin:'5px'}}
+          onClick={handleFleek}
+        >
+          测试Fleek
+        </Button>
         <Button
           type="primary"
           style={{display:'block', margin:'5px'}} 

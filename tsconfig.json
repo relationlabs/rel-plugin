@@ -45,6 +45,9 @@
             "@mock/*": [
                 "./mock/*"
             ]
+        },
+        "angularCompilerOptions": {
+            "types" : ["node"]
         }
     },
     "exclude": [

@@ -32,11 +32,11 @@
     "@babel/preset-react": "^7.14.5",
     "@babel/preset-typescript": "^7.15.0",
     "@dfinity/agent": "^0.10.1",
+    "@dfinity/auth-client": "^0.10.1",
+    "@dfinity/authentication": "^0.10.1",
     "@dfinity/candid": "^0.10.1",
     "@dfinity/identity": "^0.10.1",
     "@dfinity/principal": "^0.10.1",
-    "@dfinity/auth-client": "^0.10.1",
-    "@dfinity/authentication": "^0.10.1",
     "@types/webpack": "^5.28.0",
     "@typescript-eslint/eslint-plugin": "^4.29.3",
     "@typescript-eslint/parser": "^4.29.3",
@@ -87,6 +87,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.3",
+    "@fleekhq/fleek-storage-js": "^1.0.20",
     "@types/react": "^17.0.19",
     "@types/react-dom": "^17.0.9",
     "@types/react-router": "^5.1.16",
@@ -97,6 +98,7 @@
     "axios": "^0.23.0",
     "colors": "^1.4.0",
     "ethers": "^5.5.1",
+    "extensionizer": "^1.0.1",
     "mobx": "^6.3.2",
     "mobx-react": "^7.2.0",
     "mobx-react-lite": "^3.2.0",
@@ -106,6 +108,6 @@
     "react-dom": "^17.0.2",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
-    "extensionizer": "^1.0.1"
+    "util": "^0.12.4"
   }
 }

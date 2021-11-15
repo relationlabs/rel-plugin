@@ -39,6 +39,11 @@ module.exports = {
             "@/mock": rootJoin('./src/mock.js'),
         }
     },
+    resolve: {
+        fallback: {
+          util: require.resolve("util/")
+        }
+    },
     module: {
         rules: [
             {
