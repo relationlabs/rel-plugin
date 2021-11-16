@@ -1,37 +1,66 @@
 import React, {useEffect} from 'react'
 import { Button, Spin, message } from 'antd';
 import { BigNumber } from "ethers";
-import { LoadingOutlined } from '@ant-design/icons';
 import { Ed25519KeyIdentity } from "@dfinity/identity";
 import ContractsUtils from '../../../../../common/utils/contractsUtils.js';
 import { createActor, canisterId } from '../../../../../common/utils/declarations/relationship/index';
 import FleekUtils from '../../../../../common/utils/fleekUtils';
+import { AuthClient } from '@dfinity/auth-client';
 
 let relationship;
 let identity;
 
 function TestTab(props) {
+  const Chain = window.localStorage.getItem("Chain");
   const dfinityKey = window.localStorage.getItem("dfinityKey");
-  const ethAddress = ContractsUtils.getLocalStorageWallet()?.address;
+  const ethAddress = Chain == 'Ethereum' ? ContractsUtils.getLocalStorageWallet()?.address : '';
 
-  const handleAccountsChanged = async (arr) => {
+  // 通过ETH创建Dfinity身份
+  const ethCreateIC = async () => {
     const address = ContractsUtils.getLocalStorageWallet()?.address
-    var wallet = ContractsUtils.getLocalStorageWallet(); // ethers.utils.verifyMessage(message , signature);
+    var wallet = ContractsUtils.getLocalStorageWallet(); 
     let flatSig = await wallet.signMessage(ContractsUtils.getUserName(address) ?? 'IC contracts');
     const array = flatSig
       .replace("0x", "")
       .match(/.{4}/g)
       .map((hexNoPrefix) => BigNumber.from("0x" + hexNoPrefix).toNumber());
     const uint8Array = Uint8Array.from(array);
-    const id = Ed25519KeyIdentity.generate(uint8Array);
-    return id;
-    /*
-    const principal = id.getPrincipal();
-    console.log(principal.toString());
-    return principal;
-    */
+    const identity = Ed25519KeyIdentity.generate(uint8Array);
+
+    console.log("------------ identity ---------");
+    console.log(identity);
+    console.log(identity.getPrincipal().toText());
+
+    relationship = createActor(canisterId, {
+      agentOptions: {
+        host: 'https://ic0.app',
+        identity,
+      },
+    });
+    relationship.createProfile('momo').then(res => 
+      console.log("ethCreateIC-通过ETH创建Dfinity身份: ", res)
+    );
   }
 
+  // 通过IC创建Dfinity身份
+  const icCreateIC = async() => {
+    const authClient = await AuthClient.create();
+    identity = await authClient.getIdentity();
+    console.log("------------ identity ---------");
+    console.log(identity);
+    console.log(identity.getPrincipal().toText());
+    relationship = createActor(canisterId, {
+      agentOptions: {
+        host: 'https://ic0.app',
+        identity,
+      },
+    });
+    relationship.createProfile('momo').then(res => 
+      console.log("icCreateIC-通过IC创建Dfinity身份: ", res)
+    );
+  }
+
+  // 测试Fleek Storage JS库
   const handleFleek = async() => {
     await FleekUtils.saveDataToIpfs('zhengbinbin1');
     message.success('数据已上传fleek');
@@ -86,19 +115,16 @@ function TestTab(props) {
         <Button 
           type="primary" 
           style={{display:'block', margin:'5px'}} 
-          onClick={() => {
-            handleAccountsChanged().then((id) => {
-              identity = id;
-              relationship = createActor(canisterId, {
-                agentOptions: {
-                  host: 'https://ic0.app',
-                  identity,
-                },
-              });
-              relationship.createProfile('momo').then(res => console.log(111, res));
-            })
-          }}>
-            创建用户(Dfinity)
+          onClick={icCreateIC}
+        >
+          icCreateIC
+        </Button>
+        <Button 
+          type="primary" 
+          style={{display:'block', margin:'5px'}} 
+          onClick={ethCreateIC}
+        >
+          ethCreateIC
         </Button>
         <Button 
           type="primary" 

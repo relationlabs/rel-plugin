@@ -4,8 +4,9 @@ import ReactDOM from 'react-dom';
 import { ConfigProvider, Button } from 'antd'
 import zhCN from 'antd/es/locale/zh_CN'
 import { AuthClient } from '@dfinity/auth-client';
-// import { createActor } from '../../common/utils/declarations/relationship/index'
+import { canisterId, createActor } from '../../common/utils/declarations/relationship/index'
 
+let relationship;
 const antdConfig ={
     locale: zhCN
 };
@@ -14,12 +15,10 @@ function OptionApp() {
     const [isLogin, setIsLogin] = useState(false);
 
     useEffect(() => {
-        console.log(window.localStorage.getItem("ic-identity") == null)
-        console.log(window.localStorage.getItem("ic-delegation") == null)
-        if(window.localStorage.getItem("ic-identity") != null && !!window.localStorage.getItem("ic-delegation") != null) {
-            setIsLogin(true);
+        if(window.localStorage.getItem("ic-identity") == null || window.localStorage.getItem("ic-delegation") == null) {
+            setIsLogin(false);
         } else {
-            setIsLogin(false)
+            setIsLogin(true)
         }
     }, [])
 
@@ -36,35 +35,36 @@ function OptionApp() {
     
     const handleLogin = async () => {
         const authClient = await AuthClient.create();
+        console.log(authClient);
         await authClient.login({
             identityProvider:"https://identity.ic0.app/#authorize",
             onSuccess: async () => {
-                const identity = await authClient.getIdentity();
-                window.localStorage.setItem("Chain", 'DFINITY');
-                window.localStorage.setItem("principal", identity.getPrincipal().toText());
                 setIsLogin(true);
+                const identity = await authClient.getIdentity();
+                console.log(identity.getPrincipal().toText());
+                window.localStorage.setItem("Chain", 'DFINITY');
+                window.localStorage.setItem('identity', JSON.stringify(identity))
+                window.localStorage.setItem("principal", identity.getPrincipal().toText());
 
-                console.log(identity);
-                console.log(identity.getPrincipal())
-                console.log(identity.getPrincipal().toString())
-                console.log(identity.getPrincipal().toText())
-                console.log(identity.getPrincipal().isAnonymous())
-                console.log(authClient.isAuthenticated());
+                await authClient.isAuthenticated().then(res => console.log(res));
+
                 console.log(window.localStorage.getItem('ic-identity'));
                 console.log(window.localStorage.getItem('ic-delegation'));
+                console.log(JSON.parse(window.localStorage.getItem('identity')));
+
+                relationship = createActor(canisterId, {
+                    agentOptions: {
+                        host: 'https://ic0.app',
+                        identity,
+                    },
+                });
+                relationship.createProfile('momo').then(res => 
+                    console.log("icCreateIC-通过IC创建Dfinity身份: ", res)
+                );
 
                 // console.log(identity.getKeyPair());
                 // console.log(identity.getKeyPair().secretKey);
                 // console.log(identity.Ed25519KeyIdentity.generate().toJSON());
-
-                // const whoami_actor = createActor(canisterId, {
-                //     agentOptions: {
-                //         identity,
-                //     },
-                // });
-                // const response = await whoami_actor.whoami();
-                // console.log("=============> whoami_actor <=========");
-                // console.log(response);
             },
             onError: () => {
                 setIsLogin(false);
