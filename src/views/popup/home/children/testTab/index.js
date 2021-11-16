@@ -15,7 +15,7 @@ function TestTab(props) {
   const dfinityKey = window.localStorage.getItem("dfinityKey");
   const ethAddress = Chain == 'Ethereum' ? ContractsUtils.getLocalStorageWallet()?.address : '';
 
-  // 通过ETH创建Dfinity身份
+  //通过ETH创建Dfinity身份
   const ethCreateIC = async () => {
     const address = ContractsUtils.getLocalStorageWallet()?.address
     var wallet = ContractsUtils.getLocalStorageWallet(); 
@@ -42,7 +42,7 @@ function TestTab(props) {
     );
   }
 
-  // 通过IC创建Dfinity身份
+  //通过IC创建Dfinity身份
   const icCreateIC = async() => {
     const authClient = await AuthClient.create();
     identity = await authClient.getIdentity();
@@ -60,10 +60,38 @@ function TestTab(props) {
     );
   }
 
-  // 测试Fleek Storage JS库
+  //读取用户(Dfinity)
+  const getDfinityUser = () => {
+    if (relationship) {
+      const principal = identity.getPrincipal();
+      relationship.getUserName(principal).then((opt_entry) => {
+        console.log('getUserName', opt_entry);
+      });
+    }
+  }
+
+  //测试Fleek Storage JS库
   const handleFleek = async() => {
     await FleekUtils.saveDataToIpfs('zhengbinbin1');
     message.success('数据已上传fleek');
+  }
+
+  //测试bg和popup给content发送消息
+  const bgToPopup = () => {
+    chrome.tabs.query({
+      active: true,
+      currentWindow: true,
+    }, (tabs) => {
+      chrome.tabs.sendMessage(tabs[0].id, { cmd: 'test', value: '这是一段来自popup的消息' }, (response) => {
+        console.log('来自content的回复:', response);
+      });
+    });
+  }
+
+  //测试bg与popup的相互调用
+  const popupToBg = () => {
+    const bg = chrome.extension.getBackgroundPage();
+    if (typeof bg.testf === 'function') bg.testf();
   }
 
   return (
@@ -82,62 +110,32 @@ function TestTab(props) {
         <Button 
           type="primary"
           style={{display:'block', margin:'5px'}}
-          onClick={handleFleek}
-        >
-          测试Fleek
+          onClick={handleFleek}>测试Fleek
         </Button>
         <Button
           type="primary"
           style={{display:'block', margin:'5px'}} 
-          onClick={() => {
-            const bg = chrome.extension.getBackgroundPage();
-            if (typeof bg.testf === 'function') bg.testf();
-          }}
-        >
-          测试bg与popup的相互调用
+          onClick={popupToBg}>测试bg与popup的相互调用
         </Button>
         <Button
           type="primary"
           style={{display:'block', margin:'5px'}} 
-          onClick={() => {
-            chrome.tabs.query({
-              active: true,
-              currentWindow: true,
-            }, (tabs) => {
-              chrome.tabs.sendMessage(tabs[0].id, { cmd: 'test', value: '这是一段来自popup的消息' }, (response) => {
-                console.log('来自content的回复:', response);
-              });
-            });
-          }}
-        >
-          测试bg和popup给content发送消息
+          onClick={bgToPopup}>测试bg和popup给content发送消息
         </Button>
         <Button 
           type="primary" 
           style={{display:'block', margin:'5px'}} 
-          onClick={icCreateIC}
-        >
-          icCreateIC
+          onClick={icCreateIC}>icCreateIC
         </Button>
         <Button 
           type="primary" 
           style={{display:'block', margin:'5px'}} 
-          onClick={ethCreateIC}
-        >
-          ethCreateIC
+          onClick={ethCreateIC}>ethCreateIC
         </Button>
         <Button 
           type="primary" 
           style={{display:'block', margin:'5px'}} 
-          onClick={() => {
-            if (relationship) {
-              const principal = identity.getPrincipal();
-              relationship.getUserName(principal).then((opt_entry) => {
-                console.log('getUserName', opt_entry);
-              });
-            }
-          }}>
-            读取用户(Dfinity)
+          onClick={getDfinityUser}>读取用户(Dfinity)
         </Button>
         <Button 
           type="primary" 
