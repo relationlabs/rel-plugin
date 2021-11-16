@@ -4,8 +4,11 @@ import { BigNumber } from "ethers";
 import { LoadingOutlined } from '@ant-design/icons';
 import { Ed25519KeyIdentity } from "@dfinity/identity";
 import ContractsUtils from '../../../../../common/utils/contractsUtils.js';
-import { relationship } from '../../../../../common/utils/declarations/relationship/index';
-import FleekUtils from '../../../../../common/utils/fleekUtils'
+import { createActor, canisterId } from '../../../../../common/utils/declarations/relationship/index';
+import FleekUtils from '../../../../../common/utils/fleekUtils';
+
+let relationship;
+let identity;
 
 function TestTab(props) {
   const dfinityKey = window.localStorage.getItem("dfinityKey");
@@ -20,10 +23,13 @@ function TestTab(props) {
       .match(/.{4}/g)
       .map((hexNoPrefix) => BigNumber.from("0x" + hexNoPrefix).toNumber());
     const uint8Array = Uint8Array.from(array);
-    const id = Ed25519KeyIdentity.generate(uint8Array)
+    const id = Ed25519KeyIdentity.generate(uint8Array);
+    return id;
+    /*
     const principal = id.getPrincipal();
     console.log(principal.toString());
     return principal;
+    */
   }
 
   const handleFleek = async() => {
@@ -81,14 +87,31 @@ function TestTab(props) {
           type="primary" 
           style={{display:'block', margin:'5px'}} 
           onClick={() => {
-            handleAccountsChanged().then((principal) => {
-              console.log(principal);
+            handleAccountsChanged().then((id) => {
+              identity = id;
+              relationship = createActor(canisterId, {
+                agentOptions: {
+                  host: 'https://ic0.app',
+                  identity,
+                },
+              });
+              relationship.createProfile('momo').then(res => console.log(111, res));
+            })
+          }}>
+            创建用户(Dfinity)
+        </Button>
+        <Button 
+          type="primary" 
+          style={{display:'block', margin:'5px'}} 
+          onClick={() => {
+            if (relationship) {
+              const principal = identity.getPrincipal();
               relationship.getUserName(principal).then((opt_entry) => {
                 console.log('getUserName', opt_entry);
               });
-            })
+            }
           }}>
-            测试Dfinity合约
+            读取用户(Dfinity)
         </Button>
         <Button 
           type="primary" 

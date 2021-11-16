@@ -27,8 +27,10 @@ export const canisterId = '4c55y-5qaaa-aaaai-aaxaa-cai';
  * A ready-to-use agent for the relationship canister
  * @type {import("@dfinity/agent").ActorSubclass<import("./relationship.did.js.js")._SERVICE>}
  */
+/*
  export const relationship = createActor(canisterId, {
    agentOptions: {
      host: 'https://ic0.app',
    },
  });
+ */
