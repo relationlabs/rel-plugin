@@ -1,15 +1,17 @@
 import React, {useState, useEffect} from 'react'
 import './home.styl'
-import { Tabs, Switch, message } from 'antd'
+import { Tabs, Switch, message, Upload, Spin } from 'antd'
 import { BigNumber } from "ethers";
 import FriendTab from './children/friendTab/index'
 import MessageTab from './children/messageTab/index'
 import TestTab from './children/testTab/index'
 import LogoGather from './motion/LogoGather/index';
-import { GithubOutlined, TwitterOutlined, FacebookOutlined, LoginOutlined} from '@ant-design/icons';
+import { GithubOutlined, TwitterOutlined, FacebookOutlined, LoginOutlined, LoadingOutlined} from '@ant-design/icons';
 import ContractsUtils from '../../../common/utils/contractsUtils.js';
+import FleekUtils from '../../../common/utils/fleekUtils.js';
 import DfinityLogo from '../../../assets/images/dfinity.png';
 import MotokoSvg from '../../../assets/images/motoko.svg';
+import logoWhite from '../../../assets/images/logo-white.png';
 import { Ed25519KeyIdentity } from "@dfinity/identity";
 import { nftArr } from '../../../common/constant/index.js';
 import DfinityUtils from "../../../common/utils/dfinityUtils.js"
@@ -17,18 +19,22 @@ import DfinityUtils from "../../../common/utils/dfinityUtils.js"
 const { TabPane } = Tabs;
 
 function Home(props) {
+  const Chain = window.localStorage.getItem("Chain");
+  const nftNum = JSON.parse(window.localStorage.getItem("nftNum")) ?? 0;
+
   const [tabKey, setTapKey] = useState(1);
   const [messageArr, setMessageArr] = useState(null);
   const [address, setAddress] = useState('');
   const [dfinityKey, setDfinityKey] = useState('');
-  const nftNum = JSON.parse(window.localStorage.getItem("nftNum")) ?? 0;
-  const Chain = window.localStorage.getItem("Chain");
+  const [ownerAvatar, setOwnerAvatar] = useState(logoWhite);
+  const [avtLoading, setAvtLoading] = useState(false);
 
   useEffect(() => {
     console.log("Chain: ==> " + Chain);
     if ( Chain == 'Ethereum') {
       listenMessage();
       handleAccountsChanged();
+      getUserInfo();
       setAddress(ContractsUtils.getLocalStorageWallet()?.address);
     }
   }, [])
@@ -46,6 +52,7 @@ function Home(props) {
     window.localStorage.setItem("nftNum", 0);
     window.localStorage.setItem("Chain", '');
     window.localStorage.setItem("principal", '');
+    window.localStorage.setItem("ownerAvatar", '');
     if ( Chain == 'DFINITY') {
       await DfinityUtils.logoutButtonClick();
     }
@@ -104,6 +111,42 @@ function Home(props) {
     }
   }
 
+  // 初始化获取合约中用户信息
+  const getUserInfo = async() => {
+    if (!!window.localStorage.getItem("ownerAvatar")) {
+      setOwnerAvatar(window.localStorage.getItem("ownerAvatar"));
+    } else {
+      let info = await ContractsUtils.getUserInfo();
+      window.localStorage.setItem('ownerAvatar', info?.ownerAvatar);
+      setOwnerAvatar(info?.ownerAvatar);
+    }
+  }
+
+  const uploadProps = {
+    name: "avatar",
+    listType: "picture-card",
+    className: "avatar-uploader",
+    showUploadList: false,
+    accept:".png, .jpg, .jpeg",
+    beforeUpload: file => {                         // 文件上传前校验 
+      try {
+        setAvtLoading(true);
+        FleekUtils.saveDataToIpfs(file).then(async(res) => {
+          console.log(res?.publicUrl);
+          ContractsUtils.updateUserInfo(res?.publicUrl).then(res => {
+            message.success('Fleek操作成功');
+            setAvtLoading(false);
+            window.localStorage.setItem("ownerAvatar", res?.ownerAvatar);
+            setOwnerAvatar(res?.ownerAvatar);
+          })
+        });
+      } catch(err) {
+        message.error('Fleek操作失败');
+        setAvtLoading(false);
+      }
+    },
+  }
+
   return (
     <div className="layout-home">
       <div className="section-one">
@@ -119,20 +162,13 @@ function Home(props) {
             <LoginOutlined className="lockStyle" onClick={toLogin}/>
           </div>
           <div className="avt">
-            <img 
-              className="icon" 
-              loading="lazy"
-              src={nftArr[nftNum]}
-            >
-            </img>
+            <Upload {...uploadProps}>
+              <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} spinning={avtLoading}>
+                <img className="icon" loading="lazy" src={ownerAvatar} /*src={nftArr[nftNum]}*/></img>
+              </Spin>
+            </Upload>
           </div>
           <div className="switch">
-            {/** 
-            <Radio.Group size="small" defaultValue="eth" buttonStyle="solid">
-              <Radio.Button value="eth">以太坊</Radio.Button>
-              <Radio.Button value="dfinity">Dfinity</Radio.Button>
-            </Radio.Group>
-            */}
             <img src={MotokoSvg} style={{ width: 23, marginRight: 6 }} />
             <Switch size="small" defaultChecked/>
           </div>

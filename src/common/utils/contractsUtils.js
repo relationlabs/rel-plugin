@@ -114,6 +114,10 @@ let ContractsUtils = {
       let ownerNickName = await addressListContract.ownerNickName();
       let ownerAvatar = await addressListContract.ownerAvatar();
       console.log("当前用户的昵称" + ownerNickName + ",当前用户的头像：" + ownerAvatar);
+      return {
+        'ownerNickName': ownerNickName,
+        'ownerAvatar': ownerAvatar,
+      }
     } catch(err) {
       console.log(err);
     }
@@ -240,6 +244,23 @@ let ContractsUtils = {
         return false;
       } else {
         return true;
+      }
+    } catch(err) {
+      console.log(err);
+    }
+  },
+
+  // 修改用户头像
+  updateUserInfo: async(avatar) => {
+    try {
+      var addressListContract = await ContractsUtils.createAddressListContract();
+      let ownerNickName = await addressListContract.ownerNickName();
+      let tx = await addressListContract.changeOwnerInfo(ownerNickName, avatar);
+      await tx.wait();
+      let ownerAvatar = await addressListContract.ownerAvatar();
+      return {
+        'ownerNickName': ownerNickName,
+        'ownerAvatar': ownerAvatar,
       }
     } catch(err) {
       console.log(err);

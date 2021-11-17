@@ -112,6 +112,16 @@ function TestTab(props) {
           style={{display:'block', margin:'5px'}}
           onClick={handleFleek}>测试Fleek
         </Button>
+        <Button 
+          type="primary"
+          style={{display:'block', margin:'5px'}}
+          onClick={FleekUtils.listFiles}>获取Fleek上文件列表
+        </Button>
+        <Button 
+          type="primary"
+          style={{display:'block', margin:'5px'}}
+          onClick={ContractsUtils.updateUserInfo()}>修改用户信息
+        </Button>
         <Button
           type="primary"
           style={{display:'block', margin:'5px'}} 
