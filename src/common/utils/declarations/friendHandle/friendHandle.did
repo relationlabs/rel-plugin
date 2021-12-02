@@ -1,0 +1,36 @@
+type UserName = text;
+type MsgData = 
+ record {
+   content: text;
+   from: text;
+   sendTime: int;
+ };
+type FriendInit = 
+ record {
+   addr: Addr;
+   userName: UserName;
+ };
+type FriendInfo = 
+ record {
+   addr: Addr;
+   createdAt: int;
+   friendId: FriendId;
+   userName: UserName;
+ };
+type FriendId__1 = text;
+type FriendId = text;
+type FriendHandle = 
+ service {
+   createFriend: (FriendInit) -> (opt FriendId__1);
+   createOwner: (principal) -> (principal);
+   getCanisterID: () -> (principal) query;
+   getCycles: () -> (nat) query;
+   getFriends: () -> (opt vec FriendInfo) query;
+   getMsg: () -> (opt vec text) query;
+   getMsg2: () -> (opt vec MsgData) query;
+   getOwner: () -> (principal) query;
+   sendMsg: (text) -> ();
+   sendMsg2: (text) -> ();
+ };
+type Addr = text;
+service : () -> FriendHandle

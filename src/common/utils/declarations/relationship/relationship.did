@@ -1,0 +1,28 @@
+type test = 
+ service {
+   balance: () -> (nat) query;
+   createProfile: (UserName__1) -> (opt FriendCanister__1);
+   getAdmin: () -> (principal) query;
+   getCanister: (UserId) -> (opt FriendCanister__1) query;
+   getUserCount: (text) -> (nat) query;
+   getUserName: (UserId) -> (opt UserName__1) query;
+   userProfile: (text) -> (vec record {
+                                 UserId;
+                                 Profile;
+                               }) query;
+ };
+type UserName__1 = text;
+type UserName = text;
+type UserId__1 = principal;
+type UserId = principal;
+type Profile = 
+ record {
+   createdAt: int;
+   friendCanister: FriendCanister;
+   id: UserId__1;
+   updateCanister: bool;
+   userName: UserName;
+ };
+type FriendCanister__1 = principal;
+type FriendCanister = principal;
+service : () -> test

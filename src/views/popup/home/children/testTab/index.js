@@ -4,10 +4,12 @@ import { BigNumber } from "ethers";
 import { Ed25519KeyIdentity } from "@dfinity/identity";
 import ContractsUtils from '../../../../../common/utils/contractsUtils.js';
 import { createActor, canisterId } from '../../../../../common/utils/declarations/relationship/index';
+import { createFriendActor } from '../../../../../common/utils/declarations/friendHandle/index';
 import FleekUtils from '../../../../../common/utils/fleekUtils';
 import { AuthClient } from '@dfinity/auth-client';
 
 let relationship;
+let friend;
 let identity;
 
 function TestTab(props) {
@@ -49,24 +51,41 @@ function TestTab(props) {
     console.log("------------ identity ---------");
     console.log(identity);
     console.log(identity.getPrincipal().toText());
-    relationship = createActor(canisterId, {
+    relationship = await createActor(canisterId, {
       agentOptions: {
         host: 'https://ic0.app',
         identity,
       },
     });
-    relationship.createProfile('momo').then(res => 
-      console.log("icCreateIC-通过IC创建Dfinity身份: ", res)
-    );
+    let friendCanister = await relationship.getCanister(identity.getPrincipal());
+    console.log('getCanister', friendCanister);
+    if (!friendCanister || (Array.isArray(friendCanister) && friendCanister.length === 0)) {
+      friendCanister = await relationship.createProfile('momo');
+      console.log('createProfile momo: ', friendCanister);
+    }
+    if (friendCanister) {
+      if (Array.isArray(friendCanister)) friendCanister = friendCanister[0];
+      const friendCanisterId = friendCanister.toText();
+      console.log('friendCanisterId', friendCanisterId);
+      friend = await createFriendActor(friendCanisterId, {
+        agentOptions: {
+          host: 'https://ic0.app',
+          identity,
+        },
+      });
+      let res = await friend.createFriend({
+        userName: 'nono',
+        addr: '1234',
+      });
+      console.log('create Friend', res);
+    }
   }
 
-  //读取用户(Dfinity)
-  const getDfinityUser = () => {
-    if (relationship) {
-      const principal = identity.getPrincipal();
-      relationship.getUserName(principal).then((opt_entry) => {
-        console.log('getUserName', opt_entry);
-      });
+  //读取朋友关系(Dfinity)
+  const getDfinityFriends = async () => {
+    if (friend) {
+      const res = await friend.getFriends();
+      console.log('getFriends', res);
     }
   }
 
@@ -135,17 +154,17 @@ function TestTab(props) {
         <Button 
           type="primary" 
           style={{display:'block', margin:'5px'}} 
-          onClick={icCreateIC}>icCreateIC
-        </Button>
-        <Button 
-          type="primary" 
-          style={{display:'block', margin:'5px'}} 
           onClick={ethCreateIC}>ethCreateIC
         </Button>
         <Button 
           type="primary" 
           style={{display:'block', margin:'5px'}} 
-          onClick={getDfinityUser}>读取用户(Dfinity)
+          onClick={icCreateIC}>创建用户添加好友(Dfinity)
+        </Button>
+        <Button 
+          type="primary" 
+          style={{display:'block', margin:'5px'}} 
+          onClick={getDfinityFriends}>读取用户好友(Dfinity)
         </Button>
         <Button 
           type="primary" 
